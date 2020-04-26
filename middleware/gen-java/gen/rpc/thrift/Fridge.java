@@ -12,13 +12,13 @@ public class Fridge {
 
   public interface Iface extends Device.Iface {
 
-    public Status startFreezing(java.lang.String id) throws org.apache.thrift.TException;
+    public Status startFreezing(java.lang.String id) throws InvalidArguments, org.apache.thrift.TException;
 
-    public Status stopFreezing(java.lang.String id) throws org.apache.thrift.TException;
+    public Status stopFreezing(java.lang.String id) throws InvalidArguments, org.apache.thrift.TException;
 
-    public Status changeTemperatureTo(java.lang.String id, int value) throws org.apache.thrift.TException;
+    public Status changeTemperatureTo(java.lang.String id, int value) throws InvalidArguments, org.apache.thrift.TException;
 
-    public FridgeState getTemperatureAndIsFreezing(java.lang.String id) throws org.apache.thrift.TException;
+    public FridgeState getTemperatureAndIsFreezing(java.lang.String id) throws InvalidArguments, org.apache.thrift.TException;
 
   }
 
@@ -54,7 +54,7 @@ public class Fridge {
       super(iprot, oprot);
     }
 
-    public Status startFreezing(java.lang.String id) throws org.apache.thrift.TException
+    public Status startFreezing(java.lang.String id) throws InvalidArguments, org.apache.thrift.TException
     {
       send_startFreezing(id);
       return recv_startFreezing();
@@ -67,17 +67,20 @@ public class Fridge {
       sendBase("startFreezing", args);
     }
 
-    public Status recv_startFreezing() throws org.apache.thrift.TException
+    public Status recv_startFreezing() throws InvalidArguments, org.apache.thrift.TException
     {
       startFreezing_result result = new startFreezing_result();
       receiveBase(result, "startFreezing");
       if (result.isSetSuccess()) {
         return result.success;
       }
+      if (result.invalidArgs != null) {
+        throw result.invalidArgs;
+      }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "startFreezing failed: unknown result");
     }
 
-    public Status stopFreezing(java.lang.String id) throws org.apache.thrift.TException
+    public Status stopFreezing(java.lang.String id) throws InvalidArguments, org.apache.thrift.TException
     {
       send_stopFreezing(id);
       return recv_stopFreezing();
@@ -90,17 +93,20 @@ public class Fridge {
       sendBase("stopFreezing", args);
     }
 
-    public Status recv_stopFreezing() throws org.apache.thrift.TException
+    public Status recv_stopFreezing() throws InvalidArguments, org.apache.thrift.TException
     {
       stopFreezing_result result = new stopFreezing_result();
       receiveBase(result, "stopFreezing");
       if (result.isSetSuccess()) {
         return result.success;
       }
+      if (result.invalidArgs != null) {
+        throw result.invalidArgs;
+      }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "stopFreezing failed: unknown result");
     }
 
-    public Status changeTemperatureTo(java.lang.String id, int value) throws org.apache.thrift.TException
+    public Status changeTemperatureTo(java.lang.String id, int value) throws InvalidArguments, org.apache.thrift.TException
     {
       send_changeTemperatureTo(id, value);
       return recv_changeTemperatureTo();
@@ -114,17 +120,20 @@ public class Fridge {
       sendBase("changeTemperatureTo", args);
     }
 
-    public Status recv_changeTemperatureTo() throws org.apache.thrift.TException
+    public Status recv_changeTemperatureTo() throws InvalidArguments, org.apache.thrift.TException
     {
       changeTemperatureTo_result result = new changeTemperatureTo_result();
       receiveBase(result, "changeTemperatureTo");
       if (result.isSetSuccess()) {
         return result.success;
       }
+      if (result.invalidArgs != null) {
+        throw result.invalidArgs;
+      }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "changeTemperatureTo failed: unknown result");
     }
 
-    public FridgeState getTemperatureAndIsFreezing(java.lang.String id) throws org.apache.thrift.TException
+    public FridgeState getTemperatureAndIsFreezing(java.lang.String id) throws InvalidArguments, org.apache.thrift.TException
     {
       send_getTemperatureAndIsFreezing(id);
       return recv_getTemperatureAndIsFreezing();
@@ -137,12 +146,15 @@ public class Fridge {
       sendBase("getTemperatureAndIsFreezing", args);
     }
 
-    public FridgeState recv_getTemperatureAndIsFreezing() throws org.apache.thrift.TException
+    public FridgeState recv_getTemperatureAndIsFreezing() throws InvalidArguments, org.apache.thrift.TException
     {
       getTemperatureAndIsFreezing_result result = new getTemperatureAndIsFreezing_result();
       receiveBase(result, "getTemperatureAndIsFreezing");
       if (result.isSetSuccess()) {
         return result.success;
+      }
+      if (result.invalidArgs != null) {
+        throw result.invalidArgs;
       }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getTemperatureAndIsFreezing failed: unknown result");
     }
@@ -187,7 +199,7 @@ public class Fridge {
         prot.writeMessageEnd();
       }
 
-      public Status getResult() throws org.apache.thrift.TException {
+      public Status getResult() throws InvalidArguments, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new java.lang.IllegalStateException("Method call not finished!");
         }
@@ -219,7 +231,7 @@ public class Fridge {
         prot.writeMessageEnd();
       }
 
-      public Status getResult() throws org.apache.thrift.TException {
+      public Status getResult() throws InvalidArguments, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new java.lang.IllegalStateException("Method call not finished!");
         }
@@ -254,7 +266,7 @@ public class Fridge {
         prot.writeMessageEnd();
       }
 
-      public Status getResult() throws org.apache.thrift.TException {
+      public Status getResult() throws InvalidArguments, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new java.lang.IllegalStateException("Method call not finished!");
         }
@@ -286,7 +298,7 @@ public class Fridge {
         prot.writeMessageEnd();
       }
 
-      public FridgeState getResult() throws org.apache.thrift.TException {
+      public FridgeState getResult() throws InvalidArguments, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new java.lang.IllegalStateException("Method call not finished!");
         }
@@ -336,7 +348,11 @@ public class Fridge {
 
       public startFreezing_result getResult(I iface, startFreezing_args args) throws org.apache.thrift.TException {
         startFreezing_result result = new startFreezing_result();
-        result.success = iface.startFreezing(args.id);
+        try {
+          result.success = iface.startFreezing(args.id);
+        } catch (InvalidArguments invalidArgs) {
+          result.invalidArgs = invalidArgs;
+        }
         return result;
       }
     }
@@ -361,7 +377,11 @@ public class Fridge {
 
       public stopFreezing_result getResult(I iface, stopFreezing_args args) throws org.apache.thrift.TException {
         stopFreezing_result result = new stopFreezing_result();
-        result.success = iface.stopFreezing(args.id);
+        try {
+          result.success = iface.stopFreezing(args.id);
+        } catch (InvalidArguments invalidArgs) {
+          result.invalidArgs = invalidArgs;
+        }
         return result;
       }
     }
@@ -386,7 +406,11 @@ public class Fridge {
 
       public changeTemperatureTo_result getResult(I iface, changeTemperatureTo_args args) throws org.apache.thrift.TException {
         changeTemperatureTo_result result = new changeTemperatureTo_result();
-        result.success = iface.changeTemperatureTo(args.id, args.value);
+        try {
+          result.success = iface.changeTemperatureTo(args.id, args.value);
+        } catch (InvalidArguments invalidArgs) {
+          result.invalidArgs = invalidArgs;
+        }
         return result;
       }
     }
@@ -411,7 +435,11 @@ public class Fridge {
 
       public getTemperatureAndIsFreezing_result getResult(I iface, getTemperatureAndIsFreezing_args args) throws org.apache.thrift.TException {
         getTemperatureAndIsFreezing_result result = new getTemperatureAndIsFreezing_result();
-        result.success = iface.getTemperatureAndIsFreezing(args.id);
+        try {
+          result.success = iface.getTemperatureAndIsFreezing(args.id);
+        } catch (InvalidArguments invalidArgs) {
+          result.invalidArgs = invalidArgs;
+        }
         return result;
       }
     }
@@ -465,7 +493,11 @@ public class Fridge {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TSerializable msg;
             startFreezing_result result = new startFreezing_result();
-            if (e instanceof org.apache.thrift.transport.TTransportException) {
+            if (e instanceof InvalidArguments) {
+              result.invalidArgs = (InvalidArguments) e;
+              result.setInvalidArgsIsSet(true);
+              msg = result;
+            } else if (e instanceof org.apache.thrift.transport.TTransportException) {
               _LOGGER.error("TTransportException inside handler", e);
               fb.close();
               return;
@@ -526,7 +558,11 @@ public class Fridge {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TSerializable msg;
             stopFreezing_result result = new stopFreezing_result();
-            if (e instanceof org.apache.thrift.transport.TTransportException) {
+            if (e instanceof InvalidArguments) {
+              result.invalidArgs = (InvalidArguments) e;
+              result.setInvalidArgsIsSet(true);
+              msg = result;
+            } else if (e instanceof org.apache.thrift.transport.TTransportException) {
               _LOGGER.error("TTransportException inside handler", e);
               fb.close();
               return;
@@ -587,7 +623,11 @@ public class Fridge {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TSerializable msg;
             changeTemperatureTo_result result = new changeTemperatureTo_result();
-            if (e instanceof org.apache.thrift.transport.TTransportException) {
+            if (e instanceof InvalidArguments) {
+              result.invalidArgs = (InvalidArguments) e;
+              result.setInvalidArgsIsSet(true);
+              msg = result;
+            } else if (e instanceof org.apache.thrift.transport.TTransportException) {
               _LOGGER.error("TTransportException inside handler", e);
               fb.close();
               return;
@@ -648,7 +688,11 @@ public class Fridge {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TSerializable msg;
             getTemperatureAndIsFreezing_result result = new getTemperatureAndIsFreezing_result();
-            if (e instanceof org.apache.thrift.transport.TTransportException) {
+            if (e instanceof InvalidArguments) {
+              result.invalidArgs = (InvalidArguments) e;
+              result.setInvalidArgsIsSet(true);
+              msg = result;
+            } else if (e instanceof org.apache.thrift.transport.TTransportException) {
               _LOGGER.error("TTransportException inside handler", e);
               fb.close();
               return;
@@ -1053,15 +1097,18 @@ public class Fridge {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("startFreezing_result");
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+    private static final org.apache.thrift.protocol.TField INVALID_ARGS_FIELD_DESC = new org.apache.thrift.protocol.TField("invalidArgs", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
     private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new startFreezing_resultStandardSchemeFactory();
     private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new startFreezing_resultTupleSchemeFactory();
 
     public @org.apache.thrift.annotation.Nullable Status success; // required
+    public @org.apache.thrift.annotation.Nullable InvalidArguments invalidArgs; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      SUCCESS((short)0, "success");
+      SUCCESS((short)0, "success"),
+      INVALID_ARGS((short)1, "invalidArgs");
 
       private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
@@ -1079,6 +1126,8 @@ public class Fridge {
         switch(fieldId) {
           case 0: // SUCCESS
             return SUCCESS;
+          case 1: // INVALID_ARGS
+            return INVALID_ARGS;
           default:
             return null;
         }
@@ -1125,6 +1174,8 @@ public class Fridge {
       java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Status.class)));
+      tmpMap.put(_Fields.INVALID_ARGS, new org.apache.thrift.meta_data.FieldMetaData("invalidArgs", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, InvalidArguments.class)));
       metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(startFreezing_result.class, metaDataMap);
     }
@@ -1133,10 +1184,12 @@ public class Fridge {
     }
 
     public startFreezing_result(
-      Status success)
+      Status success,
+      InvalidArguments invalidArgs)
     {
       this();
       this.success = success;
+      this.invalidArgs = invalidArgs;
     }
 
     /**
@@ -1145,6 +1198,9 @@ public class Fridge {
     public startFreezing_result(startFreezing_result other) {
       if (other.isSetSuccess()) {
         this.success = new Status(other.success);
+      }
+      if (other.isSetInvalidArgs()) {
+        this.invalidArgs = new InvalidArguments(other.invalidArgs);
       }
     }
 
@@ -1155,6 +1211,7 @@ public class Fridge {
     @Override
     public void clear() {
       this.success = null;
+      this.invalidArgs = null;
     }
 
     @org.apache.thrift.annotation.Nullable
@@ -1182,6 +1239,31 @@ public class Fridge {
       }
     }
 
+    @org.apache.thrift.annotation.Nullable
+    public InvalidArguments getInvalidArgs() {
+      return this.invalidArgs;
+    }
+
+    public startFreezing_result setInvalidArgs(@org.apache.thrift.annotation.Nullable InvalidArguments invalidArgs) {
+      this.invalidArgs = invalidArgs;
+      return this;
+    }
+
+    public void unsetInvalidArgs() {
+      this.invalidArgs = null;
+    }
+
+    /** Returns true if field invalidArgs is set (has been assigned a value) and false otherwise */
+    public boolean isSetInvalidArgs() {
+      return this.invalidArgs != null;
+    }
+
+    public void setInvalidArgsIsSet(boolean value) {
+      if (!value) {
+        this.invalidArgs = null;
+      }
+    }
+
     public void setFieldValue(_Fields field, @org.apache.thrift.annotation.Nullable java.lang.Object value) {
       switch (field) {
       case SUCCESS:
@@ -1189,6 +1271,14 @@ public class Fridge {
           unsetSuccess();
         } else {
           setSuccess((Status)value);
+        }
+        break;
+
+      case INVALID_ARGS:
+        if (value == null) {
+          unsetInvalidArgs();
+        } else {
+          setInvalidArgs((InvalidArguments)value);
         }
         break;
 
@@ -1200,6 +1290,9 @@ public class Fridge {
       switch (field) {
       case SUCCESS:
         return getSuccess();
+
+      case INVALID_ARGS:
+        return getInvalidArgs();
 
       }
       throw new java.lang.IllegalStateException();
@@ -1214,6 +1307,8 @@ public class Fridge {
       switch (field) {
       case SUCCESS:
         return isSetSuccess();
+      case INVALID_ARGS:
+        return isSetInvalidArgs();
       }
       throw new java.lang.IllegalStateException();
     }
@@ -1242,6 +1337,15 @@ public class Fridge {
           return false;
       }
 
+      boolean this_present_invalidArgs = true && this.isSetInvalidArgs();
+      boolean that_present_invalidArgs = true && that.isSetInvalidArgs();
+      if (this_present_invalidArgs || that_present_invalidArgs) {
+        if (!(this_present_invalidArgs && that_present_invalidArgs))
+          return false;
+        if (!this.invalidArgs.equals(that.invalidArgs))
+          return false;
+      }
+
       return true;
     }
 
@@ -1252,6 +1356,10 @@ public class Fridge {
       hashCode = hashCode * 8191 + ((isSetSuccess()) ? 131071 : 524287);
       if (isSetSuccess())
         hashCode = hashCode * 8191 + success.hashCode();
+
+      hashCode = hashCode * 8191 + ((isSetInvalidArgs()) ? 131071 : 524287);
+      if (isSetInvalidArgs())
+        hashCode = hashCode * 8191 + invalidArgs.hashCode();
 
       return hashCode;
     }
@@ -1270,6 +1378,16 @@ public class Fridge {
       }
       if (isSetSuccess()) {
         lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = java.lang.Boolean.valueOf(isSetInvalidArgs()).compareTo(other.isSetInvalidArgs());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetInvalidArgs()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.invalidArgs, other.invalidArgs);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -1300,6 +1418,14 @@ public class Fridge {
         sb.append("null");
       } else {
         sb.append(this.success);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("invalidArgs:");
+      if (this.invalidArgs == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.invalidArgs);
       }
       first = false;
       sb.append(")");
@@ -1357,6 +1483,15 @@ public class Fridge {
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
               break;
+            case 1: // INVALID_ARGS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.invalidArgs = new InvalidArguments();
+                struct.invalidArgs.read(iprot);
+                struct.setInvalidArgsIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
             default:
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
           }
@@ -1375,6 +1510,11 @@ public class Fridge {
         if (struct.success != null) {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           struct.success.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        if (struct.invalidArgs != null) {
+          oprot.writeFieldBegin(INVALID_ARGS_FIELD_DESC);
+          struct.invalidArgs.write(oprot);
           oprot.writeFieldEnd();
         }
         oprot.writeFieldStop();
@@ -1398,20 +1538,31 @@ public class Fridge {
         if (struct.isSetSuccess()) {
           optionals.set(0);
         }
-        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetInvalidArgs()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
         if (struct.isSetSuccess()) {
           struct.success.write(oprot);
+        }
+        if (struct.isSetInvalidArgs()) {
+          struct.invalidArgs.write(oprot);
         }
       }
 
       @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, startFreezing_result struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
-        java.util.BitSet incoming = iprot.readBitSet(1);
+        java.util.BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           struct.success = new Status();
           struct.success.read(iprot);
           struct.setSuccessIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.invalidArgs = new InvalidArguments();
+          struct.invalidArgs.read(iprot);
+          struct.setInvalidArgsIsSet(true);
         }
       }
     }
@@ -1792,15 +1943,18 @@ public class Fridge {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("stopFreezing_result");
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+    private static final org.apache.thrift.protocol.TField INVALID_ARGS_FIELD_DESC = new org.apache.thrift.protocol.TField("invalidArgs", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
     private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new stopFreezing_resultStandardSchemeFactory();
     private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new stopFreezing_resultTupleSchemeFactory();
 
     public @org.apache.thrift.annotation.Nullable Status success; // required
+    public @org.apache.thrift.annotation.Nullable InvalidArguments invalidArgs; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      SUCCESS((short)0, "success");
+      SUCCESS((short)0, "success"),
+      INVALID_ARGS((short)1, "invalidArgs");
 
       private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
@@ -1818,6 +1972,8 @@ public class Fridge {
         switch(fieldId) {
           case 0: // SUCCESS
             return SUCCESS;
+          case 1: // INVALID_ARGS
+            return INVALID_ARGS;
           default:
             return null;
         }
@@ -1864,6 +2020,8 @@ public class Fridge {
       java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Status.class)));
+      tmpMap.put(_Fields.INVALID_ARGS, new org.apache.thrift.meta_data.FieldMetaData("invalidArgs", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, InvalidArguments.class)));
       metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(stopFreezing_result.class, metaDataMap);
     }
@@ -1872,10 +2030,12 @@ public class Fridge {
     }
 
     public stopFreezing_result(
-      Status success)
+      Status success,
+      InvalidArguments invalidArgs)
     {
       this();
       this.success = success;
+      this.invalidArgs = invalidArgs;
     }
 
     /**
@@ -1884,6 +2044,9 @@ public class Fridge {
     public stopFreezing_result(stopFreezing_result other) {
       if (other.isSetSuccess()) {
         this.success = new Status(other.success);
+      }
+      if (other.isSetInvalidArgs()) {
+        this.invalidArgs = new InvalidArguments(other.invalidArgs);
       }
     }
 
@@ -1894,6 +2057,7 @@ public class Fridge {
     @Override
     public void clear() {
       this.success = null;
+      this.invalidArgs = null;
     }
 
     @org.apache.thrift.annotation.Nullable
@@ -1921,6 +2085,31 @@ public class Fridge {
       }
     }
 
+    @org.apache.thrift.annotation.Nullable
+    public InvalidArguments getInvalidArgs() {
+      return this.invalidArgs;
+    }
+
+    public stopFreezing_result setInvalidArgs(@org.apache.thrift.annotation.Nullable InvalidArguments invalidArgs) {
+      this.invalidArgs = invalidArgs;
+      return this;
+    }
+
+    public void unsetInvalidArgs() {
+      this.invalidArgs = null;
+    }
+
+    /** Returns true if field invalidArgs is set (has been assigned a value) and false otherwise */
+    public boolean isSetInvalidArgs() {
+      return this.invalidArgs != null;
+    }
+
+    public void setInvalidArgsIsSet(boolean value) {
+      if (!value) {
+        this.invalidArgs = null;
+      }
+    }
+
     public void setFieldValue(_Fields field, @org.apache.thrift.annotation.Nullable java.lang.Object value) {
       switch (field) {
       case SUCCESS:
@@ -1928,6 +2117,14 @@ public class Fridge {
           unsetSuccess();
         } else {
           setSuccess((Status)value);
+        }
+        break;
+
+      case INVALID_ARGS:
+        if (value == null) {
+          unsetInvalidArgs();
+        } else {
+          setInvalidArgs((InvalidArguments)value);
         }
         break;
 
@@ -1939,6 +2136,9 @@ public class Fridge {
       switch (field) {
       case SUCCESS:
         return getSuccess();
+
+      case INVALID_ARGS:
+        return getInvalidArgs();
 
       }
       throw new java.lang.IllegalStateException();
@@ -1953,6 +2153,8 @@ public class Fridge {
       switch (field) {
       case SUCCESS:
         return isSetSuccess();
+      case INVALID_ARGS:
+        return isSetInvalidArgs();
       }
       throw new java.lang.IllegalStateException();
     }
@@ -1981,6 +2183,15 @@ public class Fridge {
           return false;
       }
 
+      boolean this_present_invalidArgs = true && this.isSetInvalidArgs();
+      boolean that_present_invalidArgs = true && that.isSetInvalidArgs();
+      if (this_present_invalidArgs || that_present_invalidArgs) {
+        if (!(this_present_invalidArgs && that_present_invalidArgs))
+          return false;
+        if (!this.invalidArgs.equals(that.invalidArgs))
+          return false;
+      }
+
       return true;
     }
 
@@ -1991,6 +2202,10 @@ public class Fridge {
       hashCode = hashCode * 8191 + ((isSetSuccess()) ? 131071 : 524287);
       if (isSetSuccess())
         hashCode = hashCode * 8191 + success.hashCode();
+
+      hashCode = hashCode * 8191 + ((isSetInvalidArgs()) ? 131071 : 524287);
+      if (isSetInvalidArgs())
+        hashCode = hashCode * 8191 + invalidArgs.hashCode();
 
       return hashCode;
     }
@@ -2009,6 +2224,16 @@ public class Fridge {
       }
       if (isSetSuccess()) {
         lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = java.lang.Boolean.valueOf(isSetInvalidArgs()).compareTo(other.isSetInvalidArgs());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetInvalidArgs()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.invalidArgs, other.invalidArgs);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -2039,6 +2264,14 @@ public class Fridge {
         sb.append("null");
       } else {
         sb.append(this.success);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("invalidArgs:");
+      if (this.invalidArgs == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.invalidArgs);
       }
       first = false;
       sb.append(")");
@@ -2096,6 +2329,15 @@ public class Fridge {
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
               break;
+            case 1: // INVALID_ARGS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.invalidArgs = new InvalidArguments();
+                struct.invalidArgs.read(iprot);
+                struct.setInvalidArgsIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
             default:
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
           }
@@ -2114,6 +2356,11 @@ public class Fridge {
         if (struct.success != null) {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           struct.success.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        if (struct.invalidArgs != null) {
+          oprot.writeFieldBegin(INVALID_ARGS_FIELD_DESC);
+          struct.invalidArgs.write(oprot);
           oprot.writeFieldEnd();
         }
         oprot.writeFieldStop();
@@ -2137,20 +2384,31 @@ public class Fridge {
         if (struct.isSetSuccess()) {
           optionals.set(0);
         }
-        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetInvalidArgs()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
         if (struct.isSetSuccess()) {
           struct.success.write(oprot);
+        }
+        if (struct.isSetInvalidArgs()) {
+          struct.invalidArgs.write(oprot);
         }
       }
 
       @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, stopFreezing_result struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
-        java.util.BitSet incoming = iprot.readBitSet(1);
+        java.util.BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           struct.success = new Status();
           struct.success.read(iprot);
           struct.setSuccessIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.invalidArgs = new InvalidArguments();
+          struct.invalidArgs.read(iprot);
+          struct.setInvalidArgsIsSet(true);
         }
       }
     }
@@ -2631,15 +2889,18 @@ public class Fridge {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("changeTemperatureTo_result");
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+    private static final org.apache.thrift.protocol.TField INVALID_ARGS_FIELD_DESC = new org.apache.thrift.protocol.TField("invalidArgs", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
     private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new changeTemperatureTo_resultStandardSchemeFactory();
     private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new changeTemperatureTo_resultTupleSchemeFactory();
 
     public @org.apache.thrift.annotation.Nullable Status success; // required
+    public @org.apache.thrift.annotation.Nullable InvalidArguments invalidArgs; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      SUCCESS((short)0, "success");
+      SUCCESS((short)0, "success"),
+      INVALID_ARGS((short)1, "invalidArgs");
 
       private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
@@ -2657,6 +2918,8 @@ public class Fridge {
         switch(fieldId) {
           case 0: // SUCCESS
             return SUCCESS;
+          case 1: // INVALID_ARGS
+            return INVALID_ARGS;
           default:
             return null;
         }
@@ -2703,6 +2966,8 @@ public class Fridge {
       java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Status.class)));
+      tmpMap.put(_Fields.INVALID_ARGS, new org.apache.thrift.meta_data.FieldMetaData("invalidArgs", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, InvalidArguments.class)));
       metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(changeTemperatureTo_result.class, metaDataMap);
     }
@@ -2711,10 +2976,12 @@ public class Fridge {
     }
 
     public changeTemperatureTo_result(
-      Status success)
+      Status success,
+      InvalidArguments invalidArgs)
     {
       this();
       this.success = success;
+      this.invalidArgs = invalidArgs;
     }
 
     /**
@@ -2723,6 +2990,9 @@ public class Fridge {
     public changeTemperatureTo_result(changeTemperatureTo_result other) {
       if (other.isSetSuccess()) {
         this.success = new Status(other.success);
+      }
+      if (other.isSetInvalidArgs()) {
+        this.invalidArgs = new InvalidArguments(other.invalidArgs);
       }
     }
 
@@ -2733,6 +3003,7 @@ public class Fridge {
     @Override
     public void clear() {
       this.success = null;
+      this.invalidArgs = null;
     }
 
     @org.apache.thrift.annotation.Nullable
@@ -2760,6 +3031,31 @@ public class Fridge {
       }
     }
 
+    @org.apache.thrift.annotation.Nullable
+    public InvalidArguments getInvalidArgs() {
+      return this.invalidArgs;
+    }
+
+    public changeTemperatureTo_result setInvalidArgs(@org.apache.thrift.annotation.Nullable InvalidArguments invalidArgs) {
+      this.invalidArgs = invalidArgs;
+      return this;
+    }
+
+    public void unsetInvalidArgs() {
+      this.invalidArgs = null;
+    }
+
+    /** Returns true if field invalidArgs is set (has been assigned a value) and false otherwise */
+    public boolean isSetInvalidArgs() {
+      return this.invalidArgs != null;
+    }
+
+    public void setInvalidArgsIsSet(boolean value) {
+      if (!value) {
+        this.invalidArgs = null;
+      }
+    }
+
     public void setFieldValue(_Fields field, @org.apache.thrift.annotation.Nullable java.lang.Object value) {
       switch (field) {
       case SUCCESS:
@@ -2767,6 +3063,14 @@ public class Fridge {
           unsetSuccess();
         } else {
           setSuccess((Status)value);
+        }
+        break;
+
+      case INVALID_ARGS:
+        if (value == null) {
+          unsetInvalidArgs();
+        } else {
+          setInvalidArgs((InvalidArguments)value);
         }
         break;
 
@@ -2778,6 +3082,9 @@ public class Fridge {
       switch (field) {
       case SUCCESS:
         return getSuccess();
+
+      case INVALID_ARGS:
+        return getInvalidArgs();
 
       }
       throw new java.lang.IllegalStateException();
@@ -2792,6 +3099,8 @@ public class Fridge {
       switch (field) {
       case SUCCESS:
         return isSetSuccess();
+      case INVALID_ARGS:
+        return isSetInvalidArgs();
       }
       throw new java.lang.IllegalStateException();
     }
@@ -2820,6 +3129,15 @@ public class Fridge {
           return false;
       }
 
+      boolean this_present_invalidArgs = true && this.isSetInvalidArgs();
+      boolean that_present_invalidArgs = true && that.isSetInvalidArgs();
+      if (this_present_invalidArgs || that_present_invalidArgs) {
+        if (!(this_present_invalidArgs && that_present_invalidArgs))
+          return false;
+        if (!this.invalidArgs.equals(that.invalidArgs))
+          return false;
+      }
+
       return true;
     }
 
@@ -2830,6 +3148,10 @@ public class Fridge {
       hashCode = hashCode * 8191 + ((isSetSuccess()) ? 131071 : 524287);
       if (isSetSuccess())
         hashCode = hashCode * 8191 + success.hashCode();
+
+      hashCode = hashCode * 8191 + ((isSetInvalidArgs()) ? 131071 : 524287);
+      if (isSetInvalidArgs())
+        hashCode = hashCode * 8191 + invalidArgs.hashCode();
 
       return hashCode;
     }
@@ -2848,6 +3170,16 @@ public class Fridge {
       }
       if (isSetSuccess()) {
         lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = java.lang.Boolean.valueOf(isSetInvalidArgs()).compareTo(other.isSetInvalidArgs());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetInvalidArgs()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.invalidArgs, other.invalidArgs);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -2878,6 +3210,14 @@ public class Fridge {
         sb.append("null");
       } else {
         sb.append(this.success);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("invalidArgs:");
+      if (this.invalidArgs == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.invalidArgs);
       }
       first = false;
       sb.append(")");
@@ -2935,6 +3275,15 @@ public class Fridge {
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
               break;
+            case 1: // INVALID_ARGS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.invalidArgs = new InvalidArguments();
+                struct.invalidArgs.read(iprot);
+                struct.setInvalidArgsIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
             default:
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
           }
@@ -2953,6 +3302,11 @@ public class Fridge {
         if (struct.success != null) {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           struct.success.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        if (struct.invalidArgs != null) {
+          oprot.writeFieldBegin(INVALID_ARGS_FIELD_DESC);
+          struct.invalidArgs.write(oprot);
           oprot.writeFieldEnd();
         }
         oprot.writeFieldStop();
@@ -2976,20 +3330,31 @@ public class Fridge {
         if (struct.isSetSuccess()) {
           optionals.set(0);
         }
-        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetInvalidArgs()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
         if (struct.isSetSuccess()) {
           struct.success.write(oprot);
+        }
+        if (struct.isSetInvalidArgs()) {
+          struct.invalidArgs.write(oprot);
         }
       }
 
       @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, changeTemperatureTo_result struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
-        java.util.BitSet incoming = iprot.readBitSet(1);
+        java.util.BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           struct.success = new Status();
           struct.success.read(iprot);
           struct.setSuccessIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.invalidArgs = new InvalidArguments();
+          struct.invalidArgs.read(iprot);
+          struct.setInvalidArgsIsSet(true);
         }
       }
     }
@@ -3370,15 +3735,18 @@ public class Fridge {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getTemperatureAndIsFreezing_result");
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+    private static final org.apache.thrift.protocol.TField INVALID_ARGS_FIELD_DESC = new org.apache.thrift.protocol.TField("invalidArgs", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
     private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new getTemperatureAndIsFreezing_resultStandardSchemeFactory();
     private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new getTemperatureAndIsFreezing_resultTupleSchemeFactory();
 
     public @org.apache.thrift.annotation.Nullable FridgeState success; // required
+    public @org.apache.thrift.annotation.Nullable InvalidArguments invalidArgs; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      SUCCESS((short)0, "success");
+      SUCCESS((short)0, "success"),
+      INVALID_ARGS((short)1, "invalidArgs");
 
       private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
@@ -3396,6 +3764,8 @@ public class Fridge {
         switch(fieldId) {
           case 0: // SUCCESS
             return SUCCESS;
+          case 1: // INVALID_ARGS
+            return INVALID_ARGS;
           default:
             return null;
         }
@@ -3442,6 +3812,8 @@ public class Fridge {
       java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, FridgeState.class)));
+      tmpMap.put(_Fields.INVALID_ARGS, new org.apache.thrift.meta_data.FieldMetaData("invalidArgs", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, InvalidArguments.class)));
       metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getTemperatureAndIsFreezing_result.class, metaDataMap);
     }
@@ -3450,10 +3822,12 @@ public class Fridge {
     }
 
     public getTemperatureAndIsFreezing_result(
-      FridgeState success)
+      FridgeState success,
+      InvalidArguments invalidArgs)
     {
       this();
       this.success = success;
+      this.invalidArgs = invalidArgs;
     }
 
     /**
@@ -3462,6 +3836,9 @@ public class Fridge {
     public getTemperatureAndIsFreezing_result(getTemperatureAndIsFreezing_result other) {
       if (other.isSetSuccess()) {
         this.success = new FridgeState(other.success);
+      }
+      if (other.isSetInvalidArgs()) {
+        this.invalidArgs = new InvalidArguments(other.invalidArgs);
       }
     }
 
@@ -3472,6 +3849,7 @@ public class Fridge {
     @Override
     public void clear() {
       this.success = null;
+      this.invalidArgs = null;
     }
 
     @org.apache.thrift.annotation.Nullable
@@ -3499,6 +3877,31 @@ public class Fridge {
       }
     }
 
+    @org.apache.thrift.annotation.Nullable
+    public InvalidArguments getInvalidArgs() {
+      return this.invalidArgs;
+    }
+
+    public getTemperatureAndIsFreezing_result setInvalidArgs(@org.apache.thrift.annotation.Nullable InvalidArguments invalidArgs) {
+      this.invalidArgs = invalidArgs;
+      return this;
+    }
+
+    public void unsetInvalidArgs() {
+      this.invalidArgs = null;
+    }
+
+    /** Returns true if field invalidArgs is set (has been assigned a value) and false otherwise */
+    public boolean isSetInvalidArgs() {
+      return this.invalidArgs != null;
+    }
+
+    public void setInvalidArgsIsSet(boolean value) {
+      if (!value) {
+        this.invalidArgs = null;
+      }
+    }
+
     public void setFieldValue(_Fields field, @org.apache.thrift.annotation.Nullable java.lang.Object value) {
       switch (field) {
       case SUCCESS:
@@ -3506,6 +3909,14 @@ public class Fridge {
           unsetSuccess();
         } else {
           setSuccess((FridgeState)value);
+        }
+        break;
+
+      case INVALID_ARGS:
+        if (value == null) {
+          unsetInvalidArgs();
+        } else {
+          setInvalidArgs((InvalidArguments)value);
         }
         break;
 
@@ -3517,6 +3928,9 @@ public class Fridge {
       switch (field) {
       case SUCCESS:
         return getSuccess();
+
+      case INVALID_ARGS:
+        return getInvalidArgs();
 
       }
       throw new java.lang.IllegalStateException();
@@ -3531,6 +3945,8 @@ public class Fridge {
       switch (field) {
       case SUCCESS:
         return isSetSuccess();
+      case INVALID_ARGS:
+        return isSetInvalidArgs();
       }
       throw new java.lang.IllegalStateException();
     }
@@ -3559,6 +3975,15 @@ public class Fridge {
           return false;
       }
 
+      boolean this_present_invalidArgs = true && this.isSetInvalidArgs();
+      boolean that_present_invalidArgs = true && that.isSetInvalidArgs();
+      if (this_present_invalidArgs || that_present_invalidArgs) {
+        if (!(this_present_invalidArgs && that_present_invalidArgs))
+          return false;
+        if (!this.invalidArgs.equals(that.invalidArgs))
+          return false;
+      }
+
       return true;
     }
 
@@ -3569,6 +3994,10 @@ public class Fridge {
       hashCode = hashCode * 8191 + ((isSetSuccess()) ? 131071 : 524287);
       if (isSetSuccess())
         hashCode = hashCode * 8191 + success.hashCode();
+
+      hashCode = hashCode * 8191 + ((isSetInvalidArgs()) ? 131071 : 524287);
+      if (isSetInvalidArgs())
+        hashCode = hashCode * 8191 + invalidArgs.hashCode();
 
       return hashCode;
     }
@@ -3587,6 +4016,16 @@ public class Fridge {
       }
       if (isSetSuccess()) {
         lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = java.lang.Boolean.valueOf(isSetInvalidArgs()).compareTo(other.isSetInvalidArgs());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetInvalidArgs()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.invalidArgs, other.invalidArgs);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -3617,6 +4056,14 @@ public class Fridge {
         sb.append("null");
       } else {
         sb.append(this.success);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("invalidArgs:");
+      if (this.invalidArgs == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.invalidArgs);
       }
       first = false;
       sb.append(")");
@@ -3674,6 +4121,15 @@ public class Fridge {
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
               break;
+            case 1: // INVALID_ARGS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.invalidArgs = new InvalidArguments();
+                struct.invalidArgs.read(iprot);
+                struct.setInvalidArgsIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
             default:
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
           }
@@ -3692,6 +4148,11 @@ public class Fridge {
         if (struct.success != null) {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           struct.success.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        if (struct.invalidArgs != null) {
+          oprot.writeFieldBegin(INVALID_ARGS_FIELD_DESC);
+          struct.invalidArgs.write(oprot);
           oprot.writeFieldEnd();
         }
         oprot.writeFieldStop();
@@ -3715,20 +4176,31 @@ public class Fridge {
         if (struct.isSetSuccess()) {
           optionals.set(0);
         }
-        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetInvalidArgs()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
         if (struct.isSetSuccess()) {
           struct.success.write(oprot);
+        }
+        if (struct.isSetInvalidArgs()) {
+          struct.invalidArgs.write(oprot);
         }
       }
 
       @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, getTemperatureAndIsFreezing_result struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
-        java.util.BitSet incoming = iprot.readBitSet(1);
+        java.util.BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           struct.success = new FridgeState();
           struct.success.read(iprot);
           struct.setSuccessIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.invalidArgs = new InvalidArguments();
+          struct.invalidArgs.read(iprot);
+          struct.setInvalidArgsIsSet(true);
         }
       }
     }

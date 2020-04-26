@@ -74,6 +74,8 @@ class Client(pygen.Device.Client, Iface):
         iprot.readMessageEnd()
         if result.success is not None:
             return result.success
+        if result.invalidArgs is not None:
+            raise result.invalidArgs
         raise TApplicationException(TApplicationException.MISSING_RESULT, "changeAlarmTemperatureValue failed: unknown result")
 
     def getTemperature(self, id):
@@ -106,6 +108,8 @@ class Client(pygen.Device.Client, Iface):
         iprot.readMessageEnd()
         if result.success is not None:
             return result.success
+        if result.invalidArgs is not None:
+            raise result.invalidArgs
         raise TApplicationException(TApplicationException.MISSING_RESULT, "getTemperature failed: unknown result")
 
 
@@ -146,6 +150,9 @@ class Processor(pygen.Device.Processor, Iface, TProcessor):
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
+        except InvalidArguments as invalidArgs:
+            msg_type = TMessageType.REPLY
+            result.invalidArgs = invalidArgs
         except TApplicationException as ex:
             logging.exception('TApplication exception in handler')
             msg_type = TMessageType.EXCEPTION
@@ -169,6 +176,9 @@ class Processor(pygen.Device.Processor, Iface, TProcessor):
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
+        except InvalidArguments as invalidArgs:
+            msg_type = TMessageType.REPLY
+            result.invalidArgs = invalidArgs
         except TApplicationException as ex:
             logging.exception('TApplication exception in handler')
             msg_type = TMessageType.EXCEPTION
@@ -263,12 +273,14 @@ class changeAlarmTemperatureValue_result(object):
     """
     Attributes:
      - success
+     - invalidArgs
 
     """
 
 
-    def __init__(self, success=None,):
+    def __init__(self, success=None, invalidArgs=None,):
         self.success = success
+        self.invalidArgs = invalidArgs
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
@@ -285,6 +297,12 @@ class changeAlarmTemperatureValue_result(object):
                     self.success.read(iprot)
                 else:
                     iprot.skip(ftype)
+            elif fid == 1:
+                if ftype == TType.STRUCT:
+                    self.invalidArgs = InvalidArguments()
+                    self.invalidArgs.read(iprot)
+                else:
+                    iprot.skip(ftype)
             else:
                 iprot.skip(ftype)
             iprot.readFieldEnd()
@@ -298,6 +316,10 @@ class changeAlarmTemperatureValue_result(object):
         if self.success is not None:
             oprot.writeFieldBegin('success', TType.STRUCT, 0)
             self.success.write(oprot)
+            oprot.writeFieldEnd()
+        if self.invalidArgs is not None:
+            oprot.writeFieldBegin('invalidArgs', TType.STRUCT, 1)
+            self.invalidArgs.write(oprot)
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -318,6 +340,7 @@ class changeAlarmTemperatureValue_result(object):
 all_structs.append(changeAlarmTemperatureValue_result)
 changeAlarmTemperatureValue_result.thrift_spec = (
     (0, TType.STRUCT, 'success', [Status, None], None, ),  # 0
+    (1, TType.STRUCT, 'invalidArgs', [InvalidArguments, None], None, ),  # 1
 )
 
 
@@ -387,12 +410,14 @@ class getTemperature_result(object):
     """
     Attributes:
      - success
+     - invalidArgs
 
     """
 
 
-    def __init__(self, success=None,):
+    def __init__(self, success=None, invalidArgs=None,):
         self.success = success
+        self.invalidArgs = invalidArgs
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
@@ -408,6 +433,12 @@ class getTemperature_result(object):
                     self.success = iprot.readI32()
                 else:
                     iprot.skip(ftype)
+            elif fid == 1:
+                if ftype == TType.STRUCT:
+                    self.invalidArgs = InvalidArguments()
+                    self.invalidArgs.read(iprot)
+                else:
+                    iprot.skip(ftype)
             else:
                 iprot.skip(ftype)
             iprot.readFieldEnd()
@@ -421,6 +452,10 @@ class getTemperature_result(object):
         if self.success is not None:
             oprot.writeFieldBegin('success', TType.I32, 0)
             oprot.writeI32(self.success)
+            oprot.writeFieldEnd()
+        if self.invalidArgs is not None:
+            oprot.writeFieldBegin('invalidArgs', TType.STRUCT, 1)
+            self.invalidArgs.write(oprot)
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -441,6 +476,7 @@ class getTemperature_result(object):
 all_structs.append(getTemperature_result)
 getTemperature_result.thrift_spec = (
     (0, TType.I32, 'success', None, None, ),  # 0
+    (1, TType.STRUCT, 'invalidArgs', [InvalidArguments, None], None, ),  # 1
 )
 fix_spec(all_structs)
 del all_structs

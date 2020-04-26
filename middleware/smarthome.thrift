@@ -1,10 +1,16 @@
 namespace java gen.rpc.thrift
-namespace py pygen.rpc.thrift
+namespace py pygen
+
+exception InvalidArguments {
+  1: string operation,
+  2: string reason
+}
 
 service Device {
-  DeviceState getState(1: string id)
-  Status turnOn(1: string id)
-  Status turnOff(1: string id)
+  DeviceState getState(1: string id) throws (1: InvalidArguments invalidArgs)
+  Status turnOn(1: string id) throws (1: InvalidArguments invalidArgs)
+  Status turnOff(1: string id) throws (1: InvalidArguments invalidArgs)
+  list <string> getEveryDevice()
 }
 
 enum DeviceState {
@@ -55,23 +61,18 @@ struct TemperatureSensorObject {
   3: i32 alarmValue
 }
 
-exception InvalidArguments {
-  1: string operation,
-  2: string reason
-}
-
 service Fridge extends Device {
-  Status startFreezing(1: string id)
-  Status stopFreezing(1: string id)
-  Status changeTemperatureTo(1: string id, 2: i32 value)
-  FridgeState getTemperatureAndIsFreezing(1: string id)  
+  Status startFreezing(1: string id) throws (1: InvalidArguments invalidArgs)
+  Status stopFreezing(1: string id) throws (1: InvalidArguments invalidArgs)
+  Status changeTemperatureTo(1: string id, 2: i32 value) throws (1: InvalidArguments invalidArgs)
+  FridgeState getTemperatureAndIsFreezing(1: string id) throws (1: InvalidArguments invalidArgs)
 }
 
 service TemperatureSensor extends Device {
-  Status changeAlarmTemperatureValue(1: string id, 2: i32 alarmValue)
-  i32 getTemperature(1: string id)
+  Status changeAlarmTemperatureValue(1: string id, 2: i32 alarmValue) throws (1: InvalidArguments invalidArgs)
+  i32 getTemperature(1: string id) throws (1: InvalidArguments invalidArgs)
 }
 
 service Camera extends Device {
-  Status moveToPositionAndZoom(1: string id, 2: AngularPosition position, 3: i32 value)
+  Status moveToPositionAndZoom(1: string id, 2: AngularPosition position, 3: i32 value) throws (1: InvalidArguments invalidArgs)
 }

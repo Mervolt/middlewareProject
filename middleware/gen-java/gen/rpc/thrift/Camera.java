@@ -12,7 +12,7 @@ public class Camera {
 
   public interface Iface extends Device.Iface {
 
-    public Status moveToPositionAndZoom(java.lang.String id, AngularPosition position, int value) throws org.apache.thrift.TException;
+    public Status moveToPositionAndZoom(java.lang.String id, AngularPosition position, int value) throws InvalidArguments, org.apache.thrift.TException;
 
   }
 
@@ -42,7 +42,7 @@ public class Camera {
       super(iprot, oprot);
     }
 
-    public Status moveToPositionAndZoom(java.lang.String id, AngularPosition position, int value) throws org.apache.thrift.TException
+    public Status moveToPositionAndZoom(java.lang.String id, AngularPosition position, int value) throws InvalidArguments, org.apache.thrift.TException
     {
       send_moveToPositionAndZoom(id, position, value);
       return recv_moveToPositionAndZoom();
@@ -57,12 +57,15 @@ public class Camera {
       sendBase("moveToPositionAndZoom", args);
     }
 
-    public Status recv_moveToPositionAndZoom() throws org.apache.thrift.TException
+    public Status recv_moveToPositionAndZoom() throws InvalidArguments, org.apache.thrift.TException
     {
       moveToPositionAndZoom_result result = new moveToPositionAndZoom_result();
       receiveBase(result, "moveToPositionAndZoom");
       if (result.isSetSuccess()) {
         return result.success;
+      }
+      if (result.invalidArgs != null) {
+        throw result.invalidArgs;
       }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "moveToPositionAndZoom failed: unknown result");
     }
@@ -113,7 +116,7 @@ public class Camera {
         prot.writeMessageEnd();
       }
 
-      public Status getResult() throws org.apache.thrift.TException {
+      public Status getResult() throws InvalidArguments, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new java.lang.IllegalStateException("Method call not finished!");
         }
@@ -160,7 +163,11 @@ public class Camera {
 
       public moveToPositionAndZoom_result getResult(I iface, moveToPositionAndZoom_args args) throws org.apache.thrift.TException {
         moveToPositionAndZoom_result result = new moveToPositionAndZoom_result();
-        result.success = iface.moveToPositionAndZoom(args.id, args.position, args.value);
+        try {
+          result.success = iface.moveToPositionAndZoom(args.id, args.position, args.value);
+        } catch (InvalidArguments invalidArgs) {
+          result.invalidArgs = invalidArgs;
+        }
         return result;
       }
     }
@@ -211,7 +218,11 @@ public class Camera {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TSerializable msg;
             moveToPositionAndZoom_result result = new moveToPositionAndZoom_result();
-            if (e instanceof org.apache.thrift.transport.TTransportException) {
+            if (e instanceof InvalidArguments) {
+              result.invalidArgs = (InvalidArguments) e;
+              result.setInvalidArgsIsSet(true);
+              msg = result;
+            } else if (e instanceof org.apache.thrift.transport.TTransportException) {
               _LOGGER.error("TTransportException inside handler", e);
               fb.close();
               return;
@@ -826,15 +837,18 @@ public class Camera {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("moveToPositionAndZoom_result");
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+    private static final org.apache.thrift.protocol.TField INVALID_ARGS_FIELD_DESC = new org.apache.thrift.protocol.TField("invalidArgs", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
     private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new moveToPositionAndZoom_resultStandardSchemeFactory();
     private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new moveToPositionAndZoom_resultTupleSchemeFactory();
 
     public @org.apache.thrift.annotation.Nullable Status success; // required
+    public @org.apache.thrift.annotation.Nullable InvalidArguments invalidArgs; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      SUCCESS((short)0, "success");
+      SUCCESS((short)0, "success"),
+      INVALID_ARGS((short)1, "invalidArgs");
 
       private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
@@ -852,6 +866,8 @@ public class Camera {
         switch(fieldId) {
           case 0: // SUCCESS
             return SUCCESS;
+          case 1: // INVALID_ARGS
+            return INVALID_ARGS;
           default:
             return null;
         }
@@ -898,6 +914,8 @@ public class Camera {
       java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Status.class)));
+      tmpMap.put(_Fields.INVALID_ARGS, new org.apache.thrift.meta_data.FieldMetaData("invalidArgs", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, InvalidArguments.class)));
       metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(moveToPositionAndZoom_result.class, metaDataMap);
     }
@@ -906,10 +924,12 @@ public class Camera {
     }
 
     public moveToPositionAndZoom_result(
-      Status success)
+      Status success,
+      InvalidArguments invalidArgs)
     {
       this();
       this.success = success;
+      this.invalidArgs = invalidArgs;
     }
 
     /**
@@ -918,6 +938,9 @@ public class Camera {
     public moveToPositionAndZoom_result(moveToPositionAndZoom_result other) {
       if (other.isSetSuccess()) {
         this.success = new Status(other.success);
+      }
+      if (other.isSetInvalidArgs()) {
+        this.invalidArgs = new InvalidArguments(other.invalidArgs);
       }
     }
 
@@ -928,6 +951,7 @@ public class Camera {
     @Override
     public void clear() {
       this.success = null;
+      this.invalidArgs = null;
     }
 
     @org.apache.thrift.annotation.Nullable
@@ -955,6 +979,31 @@ public class Camera {
       }
     }
 
+    @org.apache.thrift.annotation.Nullable
+    public InvalidArguments getInvalidArgs() {
+      return this.invalidArgs;
+    }
+
+    public moveToPositionAndZoom_result setInvalidArgs(@org.apache.thrift.annotation.Nullable InvalidArguments invalidArgs) {
+      this.invalidArgs = invalidArgs;
+      return this;
+    }
+
+    public void unsetInvalidArgs() {
+      this.invalidArgs = null;
+    }
+
+    /** Returns true if field invalidArgs is set (has been assigned a value) and false otherwise */
+    public boolean isSetInvalidArgs() {
+      return this.invalidArgs != null;
+    }
+
+    public void setInvalidArgsIsSet(boolean value) {
+      if (!value) {
+        this.invalidArgs = null;
+      }
+    }
+
     public void setFieldValue(_Fields field, @org.apache.thrift.annotation.Nullable java.lang.Object value) {
       switch (field) {
       case SUCCESS:
@@ -962,6 +1011,14 @@ public class Camera {
           unsetSuccess();
         } else {
           setSuccess((Status)value);
+        }
+        break;
+
+      case INVALID_ARGS:
+        if (value == null) {
+          unsetInvalidArgs();
+        } else {
+          setInvalidArgs((InvalidArguments)value);
         }
         break;
 
@@ -973,6 +1030,9 @@ public class Camera {
       switch (field) {
       case SUCCESS:
         return getSuccess();
+
+      case INVALID_ARGS:
+        return getInvalidArgs();
 
       }
       throw new java.lang.IllegalStateException();
@@ -987,6 +1047,8 @@ public class Camera {
       switch (field) {
       case SUCCESS:
         return isSetSuccess();
+      case INVALID_ARGS:
+        return isSetInvalidArgs();
       }
       throw new java.lang.IllegalStateException();
     }
@@ -1015,6 +1077,15 @@ public class Camera {
           return false;
       }
 
+      boolean this_present_invalidArgs = true && this.isSetInvalidArgs();
+      boolean that_present_invalidArgs = true && that.isSetInvalidArgs();
+      if (this_present_invalidArgs || that_present_invalidArgs) {
+        if (!(this_present_invalidArgs && that_present_invalidArgs))
+          return false;
+        if (!this.invalidArgs.equals(that.invalidArgs))
+          return false;
+      }
+
       return true;
     }
 
@@ -1025,6 +1096,10 @@ public class Camera {
       hashCode = hashCode * 8191 + ((isSetSuccess()) ? 131071 : 524287);
       if (isSetSuccess())
         hashCode = hashCode * 8191 + success.hashCode();
+
+      hashCode = hashCode * 8191 + ((isSetInvalidArgs()) ? 131071 : 524287);
+      if (isSetInvalidArgs())
+        hashCode = hashCode * 8191 + invalidArgs.hashCode();
 
       return hashCode;
     }
@@ -1043,6 +1118,16 @@ public class Camera {
       }
       if (isSetSuccess()) {
         lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = java.lang.Boolean.valueOf(isSetInvalidArgs()).compareTo(other.isSetInvalidArgs());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetInvalidArgs()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.invalidArgs, other.invalidArgs);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -1073,6 +1158,14 @@ public class Camera {
         sb.append("null");
       } else {
         sb.append(this.success);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("invalidArgs:");
+      if (this.invalidArgs == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.invalidArgs);
       }
       first = false;
       sb.append(")");
@@ -1130,6 +1223,15 @@ public class Camera {
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
               break;
+            case 1: // INVALID_ARGS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.invalidArgs = new InvalidArguments();
+                struct.invalidArgs.read(iprot);
+                struct.setInvalidArgsIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
             default:
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
           }
@@ -1148,6 +1250,11 @@ public class Camera {
         if (struct.success != null) {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           struct.success.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        if (struct.invalidArgs != null) {
+          oprot.writeFieldBegin(INVALID_ARGS_FIELD_DESC);
+          struct.invalidArgs.write(oprot);
           oprot.writeFieldEnd();
         }
         oprot.writeFieldStop();
@@ -1171,20 +1278,31 @@ public class Camera {
         if (struct.isSetSuccess()) {
           optionals.set(0);
         }
-        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetInvalidArgs()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
         if (struct.isSetSuccess()) {
           struct.success.write(oprot);
+        }
+        if (struct.isSetInvalidArgs()) {
+          struct.invalidArgs.write(oprot);
         }
       }
 
       @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, moveToPositionAndZoom_result struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
-        java.util.BitSet incoming = iprot.readBitSet(1);
+        java.util.BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           struct.success = new Status();
           struct.success.read(iprot);
           struct.setSuccessIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.invalidArgs = new InvalidArguments();
+          struct.invalidArgs.read(iprot);
+          struct.setInvalidArgsIsSet(true);
         }
       }
     }

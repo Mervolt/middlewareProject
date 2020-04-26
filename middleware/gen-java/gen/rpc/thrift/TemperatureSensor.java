@@ -12,9 +12,9 @@ public class TemperatureSensor {
 
   public interface Iface extends Device.Iface {
 
-    public Status changeAlarmTemperatureValue(java.lang.String id, int alarmValue) throws org.apache.thrift.TException;
+    public Status changeAlarmTemperatureValue(java.lang.String id, int alarmValue) throws InvalidArguments, org.apache.thrift.TException;
 
-    public int getTemperature(java.lang.String id) throws org.apache.thrift.TException;
+    public int getTemperature(java.lang.String id) throws InvalidArguments, org.apache.thrift.TException;
 
   }
 
@@ -46,7 +46,7 @@ public class TemperatureSensor {
       super(iprot, oprot);
     }
 
-    public Status changeAlarmTemperatureValue(java.lang.String id, int alarmValue) throws org.apache.thrift.TException
+    public Status changeAlarmTemperatureValue(java.lang.String id, int alarmValue) throws InvalidArguments, org.apache.thrift.TException
     {
       send_changeAlarmTemperatureValue(id, alarmValue);
       return recv_changeAlarmTemperatureValue();
@@ -60,17 +60,20 @@ public class TemperatureSensor {
       sendBase("changeAlarmTemperatureValue", args);
     }
 
-    public Status recv_changeAlarmTemperatureValue() throws org.apache.thrift.TException
+    public Status recv_changeAlarmTemperatureValue() throws InvalidArguments, org.apache.thrift.TException
     {
       changeAlarmTemperatureValue_result result = new changeAlarmTemperatureValue_result();
       receiveBase(result, "changeAlarmTemperatureValue");
       if (result.isSetSuccess()) {
         return result.success;
       }
+      if (result.invalidArgs != null) {
+        throw result.invalidArgs;
+      }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "changeAlarmTemperatureValue failed: unknown result");
     }
 
-    public int getTemperature(java.lang.String id) throws org.apache.thrift.TException
+    public int getTemperature(java.lang.String id) throws InvalidArguments, org.apache.thrift.TException
     {
       send_getTemperature(id);
       return recv_getTemperature();
@@ -83,12 +86,15 @@ public class TemperatureSensor {
       sendBase("getTemperature", args);
     }
 
-    public int recv_getTemperature() throws org.apache.thrift.TException
+    public int recv_getTemperature() throws InvalidArguments, org.apache.thrift.TException
     {
       getTemperature_result result = new getTemperature_result();
       receiveBase(result, "getTemperature");
       if (result.isSetSuccess()) {
         return result.success;
+      }
+      if (result.invalidArgs != null) {
+        throw result.invalidArgs;
       }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getTemperature failed: unknown result");
     }
@@ -136,7 +142,7 @@ public class TemperatureSensor {
         prot.writeMessageEnd();
       }
 
-      public Status getResult() throws org.apache.thrift.TException {
+      public Status getResult() throws InvalidArguments, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new java.lang.IllegalStateException("Method call not finished!");
         }
@@ -168,7 +174,7 @@ public class TemperatureSensor {
         prot.writeMessageEnd();
       }
 
-      public java.lang.Integer getResult() throws org.apache.thrift.TException {
+      public java.lang.Integer getResult() throws InvalidArguments, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new java.lang.IllegalStateException("Method call not finished!");
         }
@@ -216,7 +222,11 @@ public class TemperatureSensor {
 
       public changeAlarmTemperatureValue_result getResult(I iface, changeAlarmTemperatureValue_args args) throws org.apache.thrift.TException {
         changeAlarmTemperatureValue_result result = new changeAlarmTemperatureValue_result();
-        result.success = iface.changeAlarmTemperatureValue(args.id, args.alarmValue);
+        try {
+          result.success = iface.changeAlarmTemperatureValue(args.id, args.alarmValue);
+        } catch (InvalidArguments invalidArgs) {
+          result.invalidArgs = invalidArgs;
+        }
         return result;
       }
     }
@@ -241,8 +251,12 @@ public class TemperatureSensor {
 
       public getTemperature_result getResult(I iface, getTemperature_args args) throws org.apache.thrift.TException {
         getTemperature_result result = new getTemperature_result();
-        result.success = iface.getTemperature(args.id);
-        result.setSuccessIsSet(true);
+        try {
+          result.success = iface.getTemperature(args.id);
+          result.setSuccessIsSet(true);
+        } catch (InvalidArguments invalidArgs) {
+          result.invalidArgs = invalidArgs;
+        }
         return result;
       }
     }
@@ -294,7 +308,11 @@ public class TemperatureSensor {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TSerializable msg;
             changeAlarmTemperatureValue_result result = new changeAlarmTemperatureValue_result();
-            if (e instanceof org.apache.thrift.transport.TTransportException) {
+            if (e instanceof InvalidArguments) {
+              result.invalidArgs = (InvalidArguments) e;
+              result.setInvalidArgsIsSet(true);
+              msg = result;
+            } else if (e instanceof org.apache.thrift.transport.TTransportException) {
               _LOGGER.error("TTransportException inside handler", e);
               fb.close();
               return;
@@ -356,7 +374,11 @@ public class TemperatureSensor {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TSerializable msg;
             getTemperature_result result = new getTemperature_result();
-            if (e instanceof org.apache.thrift.transport.TTransportException) {
+            if (e instanceof InvalidArguments) {
+              result.invalidArgs = (InvalidArguments) e;
+              result.setInvalidArgsIsSet(true);
+              msg = result;
+            } else if (e instanceof org.apache.thrift.transport.TTransportException) {
               _LOGGER.error("TTransportException inside handler", e);
               fb.close();
               return;
@@ -861,15 +883,18 @@ public class TemperatureSensor {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("changeAlarmTemperatureValue_result");
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+    private static final org.apache.thrift.protocol.TField INVALID_ARGS_FIELD_DESC = new org.apache.thrift.protocol.TField("invalidArgs", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
     private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new changeAlarmTemperatureValue_resultStandardSchemeFactory();
     private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new changeAlarmTemperatureValue_resultTupleSchemeFactory();
 
     public @org.apache.thrift.annotation.Nullable Status success; // required
+    public @org.apache.thrift.annotation.Nullable InvalidArguments invalidArgs; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      SUCCESS((short)0, "success");
+      SUCCESS((short)0, "success"),
+      INVALID_ARGS((short)1, "invalidArgs");
 
       private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
@@ -887,6 +912,8 @@ public class TemperatureSensor {
         switch(fieldId) {
           case 0: // SUCCESS
             return SUCCESS;
+          case 1: // INVALID_ARGS
+            return INVALID_ARGS;
           default:
             return null;
         }
@@ -933,6 +960,8 @@ public class TemperatureSensor {
       java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Status.class)));
+      tmpMap.put(_Fields.INVALID_ARGS, new org.apache.thrift.meta_data.FieldMetaData("invalidArgs", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, InvalidArguments.class)));
       metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(changeAlarmTemperatureValue_result.class, metaDataMap);
     }
@@ -941,10 +970,12 @@ public class TemperatureSensor {
     }
 
     public changeAlarmTemperatureValue_result(
-      Status success)
+      Status success,
+      InvalidArguments invalidArgs)
     {
       this();
       this.success = success;
+      this.invalidArgs = invalidArgs;
     }
 
     /**
@@ -953,6 +984,9 @@ public class TemperatureSensor {
     public changeAlarmTemperatureValue_result(changeAlarmTemperatureValue_result other) {
       if (other.isSetSuccess()) {
         this.success = new Status(other.success);
+      }
+      if (other.isSetInvalidArgs()) {
+        this.invalidArgs = new InvalidArguments(other.invalidArgs);
       }
     }
 
@@ -963,6 +997,7 @@ public class TemperatureSensor {
     @Override
     public void clear() {
       this.success = null;
+      this.invalidArgs = null;
     }
 
     @org.apache.thrift.annotation.Nullable
@@ -990,6 +1025,31 @@ public class TemperatureSensor {
       }
     }
 
+    @org.apache.thrift.annotation.Nullable
+    public InvalidArguments getInvalidArgs() {
+      return this.invalidArgs;
+    }
+
+    public changeAlarmTemperatureValue_result setInvalidArgs(@org.apache.thrift.annotation.Nullable InvalidArguments invalidArgs) {
+      this.invalidArgs = invalidArgs;
+      return this;
+    }
+
+    public void unsetInvalidArgs() {
+      this.invalidArgs = null;
+    }
+
+    /** Returns true if field invalidArgs is set (has been assigned a value) and false otherwise */
+    public boolean isSetInvalidArgs() {
+      return this.invalidArgs != null;
+    }
+
+    public void setInvalidArgsIsSet(boolean value) {
+      if (!value) {
+        this.invalidArgs = null;
+      }
+    }
+
     public void setFieldValue(_Fields field, @org.apache.thrift.annotation.Nullable java.lang.Object value) {
       switch (field) {
       case SUCCESS:
@@ -997,6 +1057,14 @@ public class TemperatureSensor {
           unsetSuccess();
         } else {
           setSuccess((Status)value);
+        }
+        break;
+
+      case INVALID_ARGS:
+        if (value == null) {
+          unsetInvalidArgs();
+        } else {
+          setInvalidArgs((InvalidArguments)value);
         }
         break;
 
@@ -1008,6 +1076,9 @@ public class TemperatureSensor {
       switch (field) {
       case SUCCESS:
         return getSuccess();
+
+      case INVALID_ARGS:
+        return getInvalidArgs();
 
       }
       throw new java.lang.IllegalStateException();
@@ -1022,6 +1093,8 @@ public class TemperatureSensor {
       switch (field) {
       case SUCCESS:
         return isSetSuccess();
+      case INVALID_ARGS:
+        return isSetInvalidArgs();
       }
       throw new java.lang.IllegalStateException();
     }
@@ -1050,6 +1123,15 @@ public class TemperatureSensor {
           return false;
       }
 
+      boolean this_present_invalidArgs = true && this.isSetInvalidArgs();
+      boolean that_present_invalidArgs = true && that.isSetInvalidArgs();
+      if (this_present_invalidArgs || that_present_invalidArgs) {
+        if (!(this_present_invalidArgs && that_present_invalidArgs))
+          return false;
+        if (!this.invalidArgs.equals(that.invalidArgs))
+          return false;
+      }
+
       return true;
     }
 
@@ -1060,6 +1142,10 @@ public class TemperatureSensor {
       hashCode = hashCode * 8191 + ((isSetSuccess()) ? 131071 : 524287);
       if (isSetSuccess())
         hashCode = hashCode * 8191 + success.hashCode();
+
+      hashCode = hashCode * 8191 + ((isSetInvalidArgs()) ? 131071 : 524287);
+      if (isSetInvalidArgs())
+        hashCode = hashCode * 8191 + invalidArgs.hashCode();
 
       return hashCode;
     }
@@ -1078,6 +1164,16 @@ public class TemperatureSensor {
       }
       if (isSetSuccess()) {
         lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = java.lang.Boolean.valueOf(isSetInvalidArgs()).compareTo(other.isSetInvalidArgs());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetInvalidArgs()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.invalidArgs, other.invalidArgs);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -1108,6 +1204,14 @@ public class TemperatureSensor {
         sb.append("null");
       } else {
         sb.append(this.success);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("invalidArgs:");
+      if (this.invalidArgs == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.invalidArgs);
       }
       first = false;
       sb.append(")");
@@ -1165,6 +1269,15 @@ public class TemperatureSensor {
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
               break;
+            case 1: // INVALID_ARGS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.invalidArgs = new InvalidArguments();
+                struct.invalidArgs.read(iprot);
+                struct.setInvalidArgsIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
             default:
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
           }
@@ -1183,6 +1296,11 @@ public class TemperatureSensor {
         if (struct.success != null) {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           struct.success.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        if (struct.invalidArgs != null) {
+          oprot.writeFieldBegin(INVALID_ARGS_FIELD_DESC);
+          struct.invalidArgs.write(oprot);
           oprot.writeFieldEnd();
         }
         oprot.writeFieldStop();
@@ -1206,20 +1324,31 @@ public class TemperatureSensor {
         if (struct.isSetSuccess()) {
           optionals.set(0);
         }
-        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetInvalidArgs()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
         if (struct.isSetSuccess()) {
           struct.success.write(oprot);
+        }
+        if (struct.isSetInvalidArgs()) {
+          struct.invalidArgs.write(oprot);
         }
       }
 
       @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, changeAlarmTemperatureValue_result struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
-        java.util.BitSet incoming = iprot.readBitSet(1);
+        java.util.BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           struct.success = new Status();
           struct.success.read(iprot);
           struct.setSuccessIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.invalidArgs = new InvalidArguments();
+          struct.invalidArgs.read(iprot);
+          struct.setInvalidArgsIsSet(true);
         }
       }
     }
@@ -1600,15 +1729,18 @@ public class TemperatureSensor {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getTemperature_result");
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.I32, (short)0);
+    private static final org.apache.thrift.protocol.TField INVALID_ARGS_FIELD_DESC = new org.apache.thrift.protocol.TField("invalidArgs", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
     private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new getTemperature_resultStandardSchemeFactory();
     private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new getTemperature_resultTupleSchemeFactory();
 
     public int success; // required
+    public @org.apache.thrift.annotation.Nullable InvalidArguments invalidArgs; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      SUCCESS((short)0, "success");
+      SUCCESS((short)0, "success"),
+      INVALID_ARGS((short)1, "invalidArgs");
 
       private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
@@ -1626,6 +1758,8 @@ public class TemperatureSensor {
         switch(fieldId) {
           case 0: // SUCCESS
             return SUCCESS;
+          case 1: // INVALID_ARGS
+            return INVALID_ARGS;
           default:
             return null;
         }
@@ -1674,6 +1808,8 @@ public class TemperatureSensor {
       java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+      tmpMap.put(_Fields.INVALID_ARGS, new org.apache.thrift.meta_data.FieldMetaData("invalidArgs", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, InvalidArguments.class)));
       metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getTemperature_result.class, metaDataMap);
     }
@@ -1682,11 +1818,13 @@ public class TemperatureSensor {
     }
 
     public getTemperature_result(
-      int success)
+      int success,
+      InvalidArguments invalidArgs)
     {
       this();
       this.success = success;
       setSuccessIsSet(true);
+      this.invalidArgs = invalidArgs;
     }
 
     /**
@@ -1695,6 +1833,9 @@ public class TemperatureSensor {
     public getTemperature_result(getTemperature_result other) {
       __isset_bitfield = other.__isset_bitfield;
       this.success = other.success;
+      if (other.isSetInvalidArgs()) {
+        this.invalidArgs = new InvalidArguments(other.invalidArgs);
+      }
     }
 
     public getTemperature_result deepCopy() {
@@ -1705,6 +1846,7 @@ public class TemperatureSensor {
     public void clear() {
       setSuccessIsSet(false);
       this.success = 0;
+      this.invalidArgs = null;
     }
 
     public int getSuccess() {
@@ -1730,6 +1872,31 @@ public class TemperatureSensor {
       __isset_bitfield = org.apache.thrift.EncodingUtils.setBit(__isset_bitfield, __SUCCESS_ISSET_ID, value);
     }
 
+    @org.apache.thrift.annotation.Nullable
+    public InvalidArguments getInvalidArgs() {
+      return this.invalidArgs;
+    }
+
+    public getTemperature_result setInvalidArgs(@org.apache.thrift.annotation.Nullable InvalidArguments invalidArgs) {
+      this.invalidArgs = invalidArgs;
+      return this;
+    }
+
+    public void unsetInvalidArgs() {
+      this.invalidArgs = null;
+    }
+
+    /** Returns true if field invalidArgs is set (has been assigned a value) and false otherwise */
+    public boolean isSetInvalidArgs() {
+      return this.invalidArgs != null;
+    }
+
+    public void setInvalidArgsIsSet(boolean value) {
+      if (!value) {
+        this.invalidArgs = null;
+      }
+    }
+
     public void setFieldValue(_Fields field, @org.apache.thrift.annotation.Nullable java.lang.Object value) {
       switch (field) {
       case SUCCESS:
@@ -1737,6 +1904,14 @@ public class TemperatureSensor {
           unsetSuccess();
         } else {
           setSuccess((java.lang.Integer)value);
+        }
+        break;
+
+      case INVALID_ARGS:
+        if (value == null) {
+          unsetInvalidArgs();
+        } else {
+          setInvalidArgs((InvalidArguments)value);
         }
         break;
 
@@ -1748,6 +1923,9 @@ public class TemperatureSensor {
       switch (field) {
       case SUCCESS:
         return getSuccess();
+
+      case INVALID_ARGS:
+        return getInvalidArgs();
 
       }
       throw new java.lang.IllegalStateException();
@@ -1762,6 +1940,8 @@ public class TemperatureSensor {
       switch (field) {
       case SUCCESS:
         return isSetSuccess();
+      case INVALID_ARGS:
+        return isSetInvalidArgs();
       }
       throw new java.lang.IllegalStateException();
     }
@@ -1790,6 +1970,15 @@ public class TemperatureSensor {
           return false;
       }
 
+      boolean this_present_invalidArgs = true && this.isSetInvalidArgs();
+      boolean that_present_invalidArgs = true && that.isSetInvalidArgs();
+      if (this_present_invalidArgs || that_present_invalidArgs) {
+        if (!(this_present_invalidArgs && that_present_invalidArgs))
+          return false;
+        if (!this.invalidArgs.equals(that.invalidArgs))
+          return false;
+      }
+
       return true;
     }
 
@@ -1798,6 +1987,10 @@ public class TemperatureSensor {
       int hashCode = 1;
 
       hashCode = hashCode * 8191 + success;
+
+      hashCode = hashCode * 8191 + ((isSetInvalidArgs()) ? 131071 : 524287);
+      if (isSetInvalidArgs())
+        hashCode = hashCode * 8191 + invalidArgs.hashCode();
 
       return hashCode;
     }
@@ -1816,6 +2009,16 @@ public class TemperatureSensor {
       }
       if (isSetSuccess()) {
         lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = java.lang.Boolean.valueOf(isSetInvalidArgs()).compareTo(other.isSetInvalidArgs());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetInvalidArgs()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.invalidArgs, other.invalidArgs);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -1843,6 +2046,14 @@ public class TemperatureSensor {
 
       sb.append("success:");
       sb.append(this.success);
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("invalidArgs:");
+      if (this.invalidArgs == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.invalidArgs);
+      }
       first = false;
       sb.append(")");
       return sb.toString();
@@ -1897,6 +2108,15 @@ public class TemperatureSensor {
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
               break;
+            case 1: // INVALID_ARGS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.invalidArgs = new InvalidArguments();
+                struct.invalidArgs.read(iprot);
+                struct.setInvalidArgsIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
             default:
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
           }
@@ -1915,6 +2135,11 @@ public class TemperatureSensor {
         if (struct.isSetSuccess()) {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           oprot.writeI32(struct.success);
+          oprot.writeFieldEnd();
+        }
+        if (struct.invalidArgs != null) {
+          oprot.writeFieldBegin(INVALID_ARGS_FIELD_DESC);
+          struct.invalidArgs.write(oprot);
           oprot.writeFieldEnd();
         }
         oprot.writeFieldStop();
@@ -1938,19 +2163,30 @@ public class TemperatureSensor {
         if (struct.isSetSuccess()) {
           optionals.set(0);
         }
-        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetInvalidArgs()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
         if (struct.isSetSuccess()) {
           oprot.writeI32(struct.success);
+        }
+        if (struct.isSetInvalidArgs()) {
+          struct.invalidArgs.write(oprot);
         }
       }
 
       @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, getTemperature_result struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
-        java.util.BitSet incoming = iprot.readBitSet(1);
+        java.util.BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           struct.success = iprot.readI32();
           struct.setSuccessIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.invalidArgs = new InvalidArguments();
+          struct.invalidArgs.read(iprot);
+          struct.setInvalidArgsIsSet(true);
         }
       }
     }

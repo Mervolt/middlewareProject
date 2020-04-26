@@ -29,6 +29,7 @@ if len(sys.argv) <= 1 or sys.argv[1] == '--help':
     print('  DeviceState getState(string id)')
     print('  Status turnOn(string id)')
     print('  Status turnOff(string id)')
+    print('   getEveryDevice()')
     print('')
     sys.exit(0)
 
@@ -137,6 +138,12 @@ elif cmd == 'turnOff':
         print('turnOff requires 1 args')
         sys.exit(1)
     pp.pprint(client.turnOff(args[0],))
+
+elif cmd == 'getEveryDevice':
+    if len(args) != 0:
+        print('getEveryDevice requires 0 args')
+        sys.exit(1)
+    pp.pprint(client.getEveryDevice())
 
 else:
     print('Unrecognized method %s' % cmd)

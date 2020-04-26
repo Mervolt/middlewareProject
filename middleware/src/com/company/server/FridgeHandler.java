@@ -53,7 +53,7 @@ public class FridgeHandler extends DeviceHandler implements Fridge.Iface{
             status.setResult(ResultCode.SUCCESS);
             if(fridge.getFridgeState().isIsFreezing()) {
                 fridge.getFridgeState().setIsFreezing(false);
-                status.setMessage("Freezing turned on in Fridge " + id);
+                status.setMessage("Freezing turned off in Fridge " + id);
             }
             else {
                 status.setMessage("Freezing was already turned off in Fridge " + id);

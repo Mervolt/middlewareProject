@@ -12,11 +12,13 @@ public class Device {
 
   public interface Iface {
 
-    public DeviceState getState(java.lang.String id) throws org.apache.thrift.TException;
+    public DeviceState getState(java.lang.String id) throws InvalidArguments, org.apache.thrift.TException;
 
-    public Status turnOn(java.lang.String id) throws org.apache.thrift.TException;
+    public Status turnOn(java.lang.String id) throws InvalidArguments, org.apache.thrift.TException;
 
-    public Status turnOff(java.lang.String id) throws org.apache.thrift.TException;
+    public Status turnOff(java.lang.String id) throws InvalidArguments, org.apache.thrift.TException;
+
+    public java.util.List<java.lang.String> getEveryDevice() throws org.apache.thrift.TException;
 
   }
 
@@ -27,6 +29,8 @@ public class Device {
     public void turnOn(java.lang.String id, org.apache.thrift.async.AsyncMethodCallback<Status> resultHandler) throws org.apache.thrift.TException;
 
     public void turnOff(java.lang.String id, org.apache.thrift.async.AsyncMethodCallback<Status> resultHandler) throws org.apache.thrift.TException;
+
+    public void getEveryDevice(org.apache.thrift.async.AsyncMethodCallback<java.util.List<java.lang.String>> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -50,7 +54,7 @@ public class Device {
       super(iprot, oprot);
     }
 
-    public DeviceState getState(java.lang.String id) throws org.apache.thrift.TException
+    public DeviceState getState(java.lang.String id) throws InvalidArguments, org.apache.thrift.TException
     {
       send_getState(id);
       return recv_getState();
@@ -63,17 +67,20 @@ public class Device {
       sendBase("getState", args);
     }
 
-    public DeviceState recv_getState() throws org.apache.thrift.TException
+    public DeviceState recv_getState() throws InvalidArguments, org.apache.thrift.TException
     {
       getState_result result = new getState_result();
       receiveBase(result, "getState");
       if (result.isSetSuccess()) {
         return result.success;
       }
+      if (result.invalidArgs != null) {
+        throw result.invalidArgs;
+      }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getState failed: unknown result");
     }
 
-    public Status turnOn(java.lang.String id) throws org.apache.thrift.TException
+    public Status turnOn(java.lang.String id) throws InvalidArguments, org.apache.thrift.TException
     {
       send_turnOn(id);
       return recv_turnOn();
@@ -86,17 +93,20 @@ public class Device {
       sendBase("turnOn", args);
     }
 
-    public Status recv_turnOn() throws org.apache.thrift.TException
+    public Status recv_turnOn() throws InvalidArguments, org.apache.thrift.TException
     {
       turnOn_result result = new turnOn_result();
       receiveBase(result, "turnOn");
       if (result.isSetSuccess()) {
         return result.success;
       }
+      if (result.invalidArgs != null) {
+        throw result.invalidArgs;
+      }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "turnOn failed: unknown result");
     }
 
-    public Status turnOff(java.lang.String id) throws org.apache.thrift.TException
+    public Status turnOff(java.lang.String id) throws InvalidArguments, org.apache.thrift.TException
     {
       send_turnOff(id);
       return recv_turnOff();
@@ -109,14 +119,39 @@ public class Device {
       sendBase("turnOff", args);
     }
 
-    public Status recv_turnOff() throws org.apache.thrift.TException
+    public Status recv_turnOff() throws InvalidArguments, org.apache.thrift.TException
     {
       turnOff_result result = new turnOff_result();
       receiveBase(result, "turnOff");
       if (result.isSetSuccess()) {
         return result.success;
       }
+      if (result.invalidArgs != null) {
+        throw result.invalidArgs;
+      }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "turnOff failed: unknown result");
+    }
+
+    public java.util.List<java.lang.String> getEveryDevice() throws org.apache.thrift.TException
+    {
+      send_getEveryDevice();
+      return recv_getEveryDevice();
+    }
+
+    public void send_getEveryDevice() throws org.apache.thrift.TException
+    {
+      getEveryDevice_args args = new getEveryDevice_args();
+      sendBase("getEveryDevice", args);
+    }
+
+    public java.util.List<java.lang.String> recv_getEveryDevice() throws org.apache.thrift.TException
+    {
+      getEveryDevice_result result = new getEveryDevice_result();
+      receiveBase(result, "getEveryDevice");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getEveryDevice failed: unknown result");
     }
 
   }
@@ -159,7 +194,7 @@ public class Device {
         prot.writeMessageEnd();
       }
 
-      public DeviceState getResult() throws org.apache.thrift.TException {
+      public DeviceState getResult() throws InvalidArguments, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new java.lang.IllegalStateException("Method call not finished!");
         }
@@ -191,7 +226,7 @@ public class Device {
         prot.writeMessageEnd();
       }
 
-      public Status getResult() throws org.apache.thrift.TException {
+      public Status getResult() throws InvalidArguments, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new java.lang.IllegalStateException("Method call not finished!");
         }
@@ -223,13 +258,42 @@ public class Device {
         prot.writeMessageEnd();
       }
 
-      public Status getResult() throws org.apache.thrift.TException {
+      public Status getResult() throws InvalidArguments, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new java.lang.IllegalStateException("Method call not finished!");
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
         return (new Client(prot)).recv_turnOff();
+      }
+    }
+
+    public void getEveryDevice(org.apache.thrift.async.AsyncMethodCallback<java.util.List<java.lang.String>> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      getEveryDevice_call method_call = new getEveryDevice_call(resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class getEveryDevice_call extends org.apache.thrift.async.TAsyncMethodCall<java.util.List<java.lang.String>> {
+      public getEveryDevice_call(org.apache.thrift.async.AsyncMethodCallback<java.util.List<java.lang.String>> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getEveryDevice", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getEveryDevice_args args = new getEveryDevice_args();
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public java.util.List<java.lang.String> getResult() throws org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new java.lang.IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_getEveryDevice();
       }
     }
 
@@ -249,6 +313,7 @@ public class Device {
       processMap.put("getState", new getState());
       processMap.put("turnOn", new turnOn());
       processMap.put("turnOff", new turnOff());
+      processMap.put("getEveryDevice", new getEveryDevice());
       return processMap;
     }
 
@@ -272,7 +337,11 @@ public class Device {
 
       public getState_result getResult(I iface, getState_args args) throws org.apache.thrift.TException {
         getState_result result = new getState_result();
-        result.success = iface.getState(args.id);
+        try {
+          result.success = iface.getState(args.id);
+        } catch (InvalidArguments invalidArgs) {
+          result.invalidArgs = invalidArgs;
+        }
         return result;
       }
     }
@@ -297,7 +366,11 @@ public class Device {
 
       public turnOn_result getResult(I iface, turnOn_args args) throws org.apache.thrift.TException {
         turnOn_result result = new turnOn_result();
-        result.success = iface.turnOn(args.id);
+        try {
+          result.success = iface.turnOn(args.id);
+        } catch (InvalidArguments invalidArgs) {
+          result.invalidArgs = invalidArgs;
+        }
         return result;
       }
     }
@@ -322,7 +395,36 @@ public class Device {
 
       public turnOff_result getResult(I iface, turnOff_args args) throws org.apache.thrift.TException {
         turnOff_result result = new turnOff_result();
-        result.success = iface.turnOff(args.id);
+        try {
+          result.success = iface.turnOff(args.id);
+        } catch (InvalidArguments invalidArgs) {
+          result.invalidArgs = invalidArgs;
+        }
+        return result;
+      }
+    }
+
+    public static class getEveryDevice<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getEveryDevice_args> {
+      public getEveryDevice() {
+        super("getEveryDevice");
+      }
+
+      public getEveryDevice_args getEmptyArgsInstance() {
+        return new getEveryDevice_args();
+      }
+
+      protected boolean isOneway() {
+        return false;
+      }
+
+      @Override
+      protected boolean rethrowUnhandledExceptions() {
+        return false;
+      }
+
+      public getEveryDevice_result getResult(I iface, getEveryDevice_args args) throws org.apache.thrift.TException {
+        getEveryDevice_result result = new getEveryDevice_result();
+        result.success = iface.getEveryDevice();
         return result;
       }
     }
@@ -343,6 +445,7 @@ public class Device {
       processMap.put("getState", new getState());
       processMap.put("turnOn", new turnOn());
       processMap.put("turnOff", new turnOff());
+      processMap.put("getEveryDevice", new getEveryDevice());
       return processMap;
     }
 
@@ -375,7 +478,11 @@ public class Device {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TSerializable msg;
             getState_result result = new getState_result();
-            if (e instanceof org.apache.thrift.transport.TTransportException) {
+            if (e instanceof InvalidArguments) {
+              result.invalidArgs = (InvalidArguments) e;
+              result.setInvalidArgsIsSet(true);
+              msg = result;
+            } else if (e instanceof org.apache.thrift.transport.TTransportException) {
               _LOGGER.error("TTransportException inside handler", e);
               fb.close();
               return;
@@ -436,7 +543,11 @@ public class Device {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TSerializable msg;
             turnOn_result result = new turnOn_result();
-            if (e instanceof org.apache.thrift.transport.TTransportException) {
+            if (e instanceof InvalidArguments) {
+              result.invalidArgs = (InvalidArguments) e;
+              result.setInvalidArgsIsSet(true);
+              msg = result;
+            } else if (e instanceof org.apache.thrift.transport.TTransportException) {
               _LOGGER.error("TTransportException inside handler", e);
               fb.close();
               return;
@@ -497,7 +608,11 @@ public class Device {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TSerializable msg;
             turnOff_result result = new turnOff_result();
-            if (e instanceof org.apache.thrift.transport.TTransportException) {
+            if (e instanceof InvalidArguments) {
+              result.invalidArgs = (InvalidArguments) e;
+              result.setInvalidArgsIsSet(true);
+              msg = result;
+            } else if (e instanceof org.apache.thrift.transport.TTransportException) {
               _LOGGER.error("TTransportException inside handler", e);
               fb.close();
               return;
@@ -526,6 +641,67 @@ public class Device {
 
       public void start(I iface, turnOff_args args, org.apache.thrift.async.AsyncMethodCallback<Status> resultHandler) throws org.apache.thrift.TException {
         iface.turnOff(args.id,resultHandler);
+      }
+    }
+
+    public static class getEveryDevice<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, getEveryDevice_args, java.util.List<java.lang.String>> {
+      public getEveryDevice() {
+        super("getEveryDevice");
+      }
+
+      public getEveryDevice_args getEmptyArgsInstance() {
+        return new getEveryDevice_args();
+      }
+
+      public org.apache.thrift.async.AsyncMethodCallback<java.util.List<java.lang.String>> getResultHandler(final org.apache.thrift.server.AbstractNonblockingServer.AsyncFrameBuffer fb, final int seqid) {
+        final org.apache.thrift.AsyncProcessFunction fcall = this;
+        return new org.apache.thrift.async.AsyncMethodCallback<java.util.List<java.lang.String>>() { 
+          public void onComplete(java.util.List<java.lang.String> o) {
+            getEveryDevice_result result = new getEveryDevice_result();
+            result.success = o;
+            try {
+              fcall.sendResponse(fb, result, org.apache.thrift.protocol.TMessageType.REPLY,seqid);
+            } catch (org.apache.thrift.transport.TTransportException e) {
+              _LOGGER.error("TTransportException writing to internal frame buffer", e);
+              fb.close();
+            } catch (java.lang.Exception e) {
+              _LOGGER.error("Exception writing to internal frame buffer", e);
+              onError(e);
+            }
+          }
+          public void onError(java.lang.Exception e) {
+            byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
+            org.apache.thrift.TSerializable msg;
+            getEveryDevice_result result = new getEveryDevice_result();
+            if (e instanceof org.apache.thrift.transport.TTransportException) {
+              _LOGGER.error("TTransportException inside handler", e);
+              fb.close();
+              return;
+            } else if (e instanceof org.apache.thrift.TApplicationException) {
+              _LOGGER.error("TApplicationException inside handler", e);
+              msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+              msg = (org.apache.thrift.TApplicationException)e;
+            } else {
+              _LOGGER.error("Exception inside handler", e);
+              msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+              msg = new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
+            }
+            try {
+              fcall.sendResponse(fb,msg,msgType,seqid);
+            } catch (java.lang.Exception ex) {
+              _LOGGER.error("Exception writing to internal frame buffer", ex);
+              fb.close();
+            }
+          }
+        };
+      }
+
+      protected boolean isOneway() {
+        return false;
+      }
+
+      public void start(I iface, getEveryDevice_args args, org.apache.thrift.async.AsyncMethodCallback<java.util.List<java.lang.String>> resultHandler) throws org.apache.thrift.TException {
+        iface.getEveryDevice(resultHandler);
       }
     }
 
@@ -902,15 +1078,18 @@ public class Device {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getState_result");
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.I32, (short)0);
+    private static final org.apache.thrift.protocol.TField INVALID_ARGS_FIELD_DESC = new org.apache.thrift.protocol.TField("invalidArgs", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
     private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new getState_resultStandardSchemeFactory();
     private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new getState_resultTupleSchemeFactory();
 
     public @org.apache.thrift.annotation.Nullable DeviceState success; // required
+    public @org.apache.thrift.annotation.Nullable InvalidArguments invalidArgs; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      SUCCESS((short)0, "success");
+      SUCCESS((short)0, "success"),
+      INVALID_ARGS((short)1, "invalidArgs");
 
       private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
@@ -928,6 +1107,8 @@ public class Device {
         switch(fieldId) {
           case 0: // SUCCESS
             return SUCCESS;
+          case 1: // INVALID_ARGS
+            return INVALID_ARGS;
           default:
             return null;
         }
@@ -974,6 +1155,8 @@ public class Device {
       java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.ENUM          , "DeviceState")));
+      tmpMap.put(_Fields.INVALID_ARGS, new org.apache.thrift.meta_data.FieldMetaData("invalidArgs", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, InvalidArguments.class)));
       metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getState_result.class, metaDataMap);
     }
@@ -982,10 +1165,12 @@ public class Device {
     }
 
     public getState_result(
-      DeviceState success)
+      DeviceState success,
+      InvalidArguments invalidArgs)
     {
       this();
       this.success = success;
+      this.invalidArgs = invalidArgs;
     }
 
     /**
@@ -994,6 +1179,9 @@ public class Device {
     public getState_result(getState_result other) {
       if (other.isSetSuccess()) {
         this.success = other.success;
+      }
+      if (other.isSetInvalidArgs()) {
+        this.invalidArgs = new InvalidArguments(other.invalidArgs);
       }
     }
 
@@ -1004,6 +1192,7 @@ public class Device {
     @Override
     public void clear() {
       this.success = null;
+      this.invalidArgs = null;
     }
 
     @org.apache.thrift.annotation.Nullable
@@ -1031,6 +1220,31 @@ public class Device {
       }
     }
 
+    @org.apache.thrift.annotation.Nullable
+    public InvalidArguments getInvalidArgs() {
+      return this.invalidArgs;
+    }
+
+    public getState_result setInvalidArgs(@org.apache.thrift.annotation.Nullable InvalidArguments invalidArgs) {
+      this.invalidArgs = invalidArgs;
+      return this;
+    }
+
+    public void unsetInvalidArgs() {
+      this.invalidArgs = null;
+    }
+
+    /** Returns true if field invalidArgs is set (has been assigned a value) and false otherwise */
+    public boolean isSetInvalidArgs() {
+      return this.invalidArgs != null;
+    }
+
+    public void setInvalidArgsIsSet(boolean value) {
+      if (!value) {
+        this.invalidArgs = null;
+      }
+    }
+
     public void setFieldValue(_Fields field, @org.apache.thrift.annotation.Nullable java.lang.Object value) {
       switch (field) {
       case SUCCESS:
@@ -1038,6 +1252,14 @@ public class Device {
           unsetSuccess();
         } else {
           setSuccess((DeviceState)value);
+        }
+        break;
+
+      case INVALID_ARGS:
+        if (value == null) {
+          unsetInvalidArgs();
+        } else {
+          setInvalidArgs((InvalidArguments)value);
         }
         break;
 
@@ -1049,6 +1271,9 @@ public class Device {
       switch (field) {
       case SUCCESS:
         return getSuccess();
+
+      case INVALID_ARGS:
+        return getInvalidArgs();
 
       }
       throw new java.lang.IllegalStateException();
@@ -1063,6 +1288,8 @@ public class Device {
       switch (field) {
       case SUCCESS:
         return isSetSuccess();
+      case INVALID_ARGS:
+        return isSetInvalidArgs();
       }
       throw new java.lang.IllegalStateException();
     }
@@ -1091,6 +1318,15 @@ public class Device {
           return false;
       }
 
+      boolean this_present_invalidArgs = true && this.isSetInvalidArgs();
+      boolean that_present_invalidArgs = true && that.isSetInvalidArgs();
+      if (this_present_invalidArgs || that_present_invalidArgs) {
+        if (!(this_present_invalidArgs && that_present_invalidArgs))
+          return false;
+        if (!this.invalidArgs.equals(that.invalidArgs))
+          return false;
+      }
+
       return true;
     }
 
@@ -1101,6 +1337,10 @@ public class Device {
       hashCode = hashCode * 8191 + ((isSetSuccess()) ? 131071 : 524287);
       if (isSetSuccess())
         hashCode = hashCode * 8191 + success.getValue();
+
+      hashCode = hashCode * 8191 + ((isSetInvalidArgs()) ? 131071 : 524287);
+      if (isSetInvalidArgs())
+        hashCode = hashCode * 8191 + invalidArgs.hashCode();
 
       return hashCode;
     }
@@ -1119,6 +1359,16 @@ public class Device {
       }
       if (isSetSuccess()) {
         lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = java.lang.Boolean.valueOf(isSetInvalidArgs()).compareTo(other.isSetInvalidArgs());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetInvalidArgs()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.invalidArgs, other.invalidArgs);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -1149,6 +1399,14 @@ public class Device {
         sb.append("null");
       } else {
         sb.append(this.success);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("invalidArgs:");
+      if (this.invalidArgs == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.invalidArgs);
       }
       first = false;
       sb.append(")");
@@ -1202,6 +1460,15 @@ public class Device {
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
               break;
+            case 1: // INVALID_ARGS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.invalidArgs = new InvalidArguments();
+                struct.invalidArgs.read(iprot);
+                struct.setInvalidArgsIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
             default:
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
           }
@@ -1220,6 +1487,11 @@ public class Device {
         if (struct.success != null) {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           oprot.writeI32(struct.success.getValue());
+          oprot.writeFieldEnd();
+        }
+        if (struct.invalidArgs != null) {
+          oprot.writeFieldBegin(INVALID_ARGS_FIELD_DESC);
+          struct.invalidArgs.write(oprot);
           oprot.writeFieldEnd();
         }
         oprot.writeFieldStop();
@@ -1243,19 +1515,30 @@ public class Device {
         if (struct.isSetSuccess()) {
           optionals.set(0);
         }
-        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetInvalidArgs()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
         if (struct.isSetSuccess()) {
           oprot.writeI32(struct.success.getValue());
+        }
+        if (struct.isSetInvalidArgs()) {
+          struct.invalidArgs.write(oprot);
         }
       }
 
       @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, getState_result struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
-        java.util.BitSet incoming = iprot.readBitSet(1);
+        java.util.BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           struct.success = gen.rpc.thrift.DeviceState.findByValue(iprot.readI32());
           struct.setSuccessIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.invalidArgs = new InvalidArguments();
+          struct.invalidArgs.read(iprot);
+          struct.setInvalidArgsIsSet(true);
         }
       }
     }
@@ -1636,15 +1919,18 @@ public class Device {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("turnOn_result");
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+    private static final org.apache.thrift.protocol.TField INVALID_ARGS_FIELD_DESC = new org.apache.thrift.protocol.TField("invalidArgs", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
     private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new turnOn_resultStandardSchemeFactory();
     private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new turnOn_resultTupleSchemeFactory();
 
     public @org.apache.thrift.annotation.Nullable Status success; // required
+    public @org.apache.thrift.annotation.Nullable InvalidArguments invalidArgs; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      SUCCESS((short)0, "success");
+      SUCCESS((short)0, "success"),
+      INVALID_ARGS((short)1, "invalidArgs");
 
       private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
@@ -1662,6 +1948,8 @@ public class Device {
         switch(fieldId) {
           case 0: // SUCCESS
             return SUCCESS;
+          case 1: // INVALID_ARGS
+            return INVALID_ARGS;
           default:
             return null;
         }
@@ -1708,6 +1996,8 @@ public class Device {
       java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRUCT          , "Status")));
+      tmpMap.put(_Fields.INVALID_ARGS, new org.apache.thrift.meta_data.FieldMetaData("invalidArgs", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, InvalidArguments.class)));
       metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(turnOn_result.class, metaDataMap);
     }
@@ -1716,10 +2006,12 @@ public class Device {
     }
 
     public turnOn_result(
-      Status success)
+      Status success,
+      InvalidArguments invalidArgs)
     {
       this();
       this.success = success;
+      this.invalidArgs = invalidArgs;
     }
 
     /**
@@ -1728,6 +2020,9 @@ public class Device {
     public turnOn_result(turnOn_result other) {
       if (other.isSetSuccess()) {
         this.success = new Status(other.success);
+      }
+      if (other.isSetInvalidArgs()) {
+        this.invalidArgs = new InvalidArguments(other.invalidArgs);
       }
     }
 
@@ -1738,6 +2033,7 @@ public class Device {
     @Override
     public void clear() {
       this.success = null;
+      this.invalidArgs = null;
     }
 
     @org.apache.thrift.annotation.Nullable
@@ -1765,6 +2061,31 @@ public class Device {
       }
     }
 
+    @org.apache.thrift.annotation.Nullable
+    public InvalidArguments getInvalidArgs() {
+      return this.invalidArgs;
+    }
+
+    public turnOn_result setInvalidArgs(@org.apache.thrift.annotation.Nullable InvalidArguments invalidArgs) {
+      this.invalidArgs = invalidArgs;
+      return this;
+    }
+
+    public void unsetInvalidArgs() {
+      this.invalidArgs = null;
+    }
+
+    /** Returns true if field invalidArgs is set (has been assigned a value) and false otherwise */
+    public boolean isSetInvalidArgs() {
+      return this.invalidArgs != null;
+    }
+
+    public void setInvalidArgsIsSet(boolean value) {
+      if (!value) {
+        this.invalidArgs = null;
+      }
+    }
+
     public void setFieldValue(_Fields field, @org.apache.thrift.annotation.Nullable java.lang.Object value) {
       switch (field) {
       case SUCCESS:
@@ -1772,6 +2093,14 @@ public class Device {
           unsetSuccess();
         } else {
           setSuccess((Status)value);
+        }
+        break;
+
+      case INVALID_ARGS:
+        if (value == null) {
+          unsetInvalidArgs();
+        } else {
+          setInvalidArgs((InvalidArguments)value);
         }
         break;
 
@@ -1783,6 +2112,9 @@ public class Device {
       switch (field) {
       case SUCCESS:
         return getSuccess();
+
+      case INVALID_ARGS:
+        return getInvalidArgs();
 
       }
       throw new java.lang.IllegalStateException();
@@ -1797,6 +2129,8 @@ public class Device {
       switch (field) {
       case SUCCESS:
         return isSetSuccess();
+      case INVALID_ARGS:
+        return isSetInvalidArgs();
       }
       throw new java.lang.IllegalStateException();
     }
@@ -1825,6 +2159,15 @@ public class Device {
           return false;
       }
 
+      boolean this_present_invalidArgs = true && this.isSetInvalidArgs();
+      boolean that_present_invalidArgs = true && that.isSetInvalidArgs();
+      if (this_present_invalidArgs || that_present_invalidArgs) {
+        if (!(this_present_invalidArgs && that_present_invalidArgs))
+          return false;
+        if (!this.invalidArgs.equals(that.invalidArgs))
+          return false;
+      }
+
       return true;
     }
 
@@ -1835,6 +2178,10 @@ public class Device {
       hashCode = hashCode * 8191 + ((isSetSuccess()) ? 131071 : 524287);
       if (isSetSuccess())
         hashCode = hashCode * 8191 + success.hashCode();
+
+      hashCode = hashCode * 8191 + ((isSetInvalidArgs()) ? 131071 : 524287);
+      if (isSetInvalidArgs())
+        hashCode = hashCode * 8191 + invalidArgs.hashCode();
 
       return hashCode;
     }
@@ -1853,6 +2200,16 @@ public class Device {
       }
       if (isSetSuccess()) {
         lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = java.lang.Boolean.valueOf(isSetInvalidArgs()).compareTo(other.isSetInvalidArgs());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetInvalidArgs()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.invalidArgs, other.invalidArgs);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -1883,6 +2240,14 @@ public class Device {
         sb.append("null");
       } else {
         sb.append(this.success);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("invalidArgs:");
+      if (this.invalidArgs == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.invalidArgs);
       }
       first = false;
       sb.append(")");
@@ -1937,6 +2302,15 @@ public class Device {
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
               break;
+            case 1: // INVALID_ARGS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.invalidArgs = new InvalidArguments();
+                struct.invalidArgs.read(iprot);
+                struct.setInvalidArgsIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
             default:
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
           }
@@ -1955,6 +2329,11 @@ public class Device {
         if (struct.success != null) {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           struct.success.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        if (struct.invalidArgs != null) {
+          oprot.writeFieldBegin(INVALID_ARGS_FIELD_DESC);
+          struct.invalidArgs.write(oprot);
           oprot.writeFieldEnd();
         }
         oprot.writeFieldStop();
@@ -1978,20 +2357,31 @@ public class Device {
         if (struct.isSetSuccess()) {
           optionals.set(0);
         }
-        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetInvalidArgs()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
         if (struct.isSetSuccess()) {
           struct.success.write(oprot);
+        }
+        if (struct.isSetInvalidArgs()) {
+          struct.invalidArgs.write(oprot);
         }
       }
 
       @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, turnOn_result struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
-        java.util.BitSet incoming = iprot.readBitSet(1);
+        java.util.BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           struct.success = new Status();
           struct.success.read(iprot);
           struct.setSuccessIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.invalidArgs = new InvalidArguments();
+          struct.invalidArgs.read(iprot);
+          struct.setInvalidArgsIsSet(true);
         }
       }
     }
@@ -2372,11 +2762,741 @@ public class Device {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("turnOff_result");
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+    private static final org.apache.thrift.protocol.TField INVALID_ARGS_FIELD_DESC = new org.apache.thrift.protocol.TField("invalidArgs", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
     private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new turnOff_resultStandardSchemeFactory();
     private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new turnOff_resultTupleSchemeFactory();
 
     public @org.apache.thrift.annotation.Nullable Status success; // required
+    public @org.apache.thrift.annotation.Nullable InvalidArguments invalidArgs; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success"),
+      INVALID_ARGS((short)1, "invalidArgs");
+
+      private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
+
+      static {
+        for (_Fields field : java.util.EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      @org.apache.thrift.annotation.Nullable
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          case 1: // INVALID_ARGS
+            return INVALID_ARGS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new java.lang.IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      @org.apache.thrift.annotation.Nullable
+      public static _Fields findByName(java.lang.String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final java.lang.String _fieldName;
+
+      _Fields(short thriftId, java.lang.String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public java.lang.String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRUCT          , "Status")));
+      tmpMap.put(_Fields.INVALID_ARGS, new org.apache.thrift.meta_data.FieldMetaData("invalidArgs", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, InvalidArguments.class)));
+      metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(turnOff_result.class, metaDataMap);
+    }
+
+    public turnOff_result() {
+    }
+
+    public turnOff_result(
+      Status success,
+      InvalidArguments invalidArgs)
+    {
+      this();
+      this.success = success;
+      this.invalidArgs = invalidArgs;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public turnOff_result(turnOff_result other) {
+      if (other.isSetSuccess()) {
+        this.success = new Status(other.success);
+      }
+      if (other.isSetInvalidArgs()) {
+        this.invalidArgs = new InvalidArguments(other.invalidArgs);
+      }
+    }
+
+    public turnOff_result deepCopy() {
+      return new turnOff_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+      this.invalidArgs = null;
+    }
+
+    @org.apache.thrift.annotation.Nullable
+    public Status getSuccess() {
+      return this.success;
+    }
+
+    public turnOff_result setSuccess(@org.apache.thrift.annotation.Nullable Status success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    @org.apache.thrift.annotation.Nullable
+    public InvalidArguments getInvalidArgs() {
+      return this.invalidArgs;
+    }
+
+    public turnOff_result setInvalidArgs(@org.apache.thrift.annotation.Nullable InvalidArguments invalidArgs) {
+      this.invalidArgs = invalidArgs;
+      return this;
+    }
+
+    public void unsetInvalidArgs() {
+      this.invalidArgs = null;
+    }
+
+    /** Returns true if field invalidArgs is set (has been assigned a value) and false otherwise */
+    public boolean isSetInvalidArgs() {
+      return this.invalidArgs != null;
+    }
+
+    public void setInvalidArgsIsSet(boolean value) {
+      if (!value) {
+        this.invalidArgs = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, @org.apache.thrift.annotation.Nullable java.lang.Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((Status)value);
+        }
+        break;
+
+      case INVALID_ARGS:
+        if (value == null) {
+          unsetInvalidArgs();
+        } else {
+          setInvalidArgs((InvalidArguments)value);
+        }
+        break;
+
+      }
+    }
+
+    @org.apache.thrift.annotation.Nullable
+    public java.lang.Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      case INVALID_ARGS:
+        return getInvalidArgs();
+
+      }
+      throw new java.lang.IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new java.lang.IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      case INVALID_ARGS:
+        return isSetInvalidArgs();
+      }
+      throw new java.lang.IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(java.lang.Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof turnOff_result)
+        return this.equals((turnOff_result)that);
+      return false;
+    }
+
+    public boolean equals(turnOff_result that) {
+      if (that == null)
+        return false;
+      if (this == that)
+        return true;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      boolean this_present_invalidArgs = true && this.isSetInvalidArgs();
+      boolean that_present_invalidArgs = true && that.isSetInvalidArgs();
+      if (this_present_invalidArgs || that_present_invalidArgs) {
+        if (!(this_present_invalidArgs && that_present_invalidArgs))
+          return false;
+        if (!this.invalidArgs.equals(that.invalidArgs))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      int hashCode = 1;
+
+      hashCode = hashCode * 8191 + ((isSetSuccess()) ? 131071 : 524287);
+      if (isSetSuccess())
+        hashCode = hashCode * 8191 + success.hashCode();
+
+      hashCode = hashCode * 8191 + ((isSetInvalidArgs()) ? 131071 : 524287);
+      if (isSetInvalidArgs())
+        hashCode = hashCode * 8191 + invalidArgs.hashCode();
+
+      return hashCode;
+    }
+
+    @Override
+    public int compareTo(turnOff_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+
+      lastComparison = java.lang.Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = java.lang.Boolean.valueOf(isSetInvalidArgs()).compareTo(other.isSetInvalidArgs());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetInvalidArgs()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.invalidArgs, other.invalidArgs);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    @org.apache.thrift.annotation.Nullable
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      scheme(iprot).read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      scheme(oprot).write(oprot, this);
+      }
+
+    @Override
+    public java.lang.String toString() {
+      java.lang.StringBuilder sb = new java.lang.StringBuilder("turnOff_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("invalidArgs:");
+      if (this.invalidArgs == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.invalidArgs);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+      // check for sub-struct validity
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, java.lang.ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class turnOff_resultStandardSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
+      public turnOff_resultStandardScheme getScheme() {
+        return new turnOff_resultStandardScheme();
+      }
+    }
+
+    private static class turnOff_resultStandardScheme extends org.apache.thrift.scheme.StandardScheme<turnOff_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, turnOff_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.success = new Status();
+                struct.success.read(iprot);
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            case 1: // INVALID_ARGS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.invalidArgs = new InvalidArguments();
+                struct.invalidArgs.read(iprot);
+                struct.setInvalidArgsIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, turnOff_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          struct.success.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        if (struct.invalidArgs != null) {
+          oprot.writeFieldBegin(INVALID_ARGS_FIELD_DESC);
+          struct.invalidArgs.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class turnOff_resultTupleSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
+      public turnOff_resultTupleScheme getScheme() {
+        return new turnOff_resultTupleScheme();
+      }
+    }
+
+    private static class turnOff_resultTupleScheme extends org.apache.thrift.scheme.TupleScheme<turnOff_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, turnOff_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TTupleProtocol oprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+        java.util.BitSet optionals = new java.util.BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        if (struct.isSetInvalidArgs()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
+        if (struct.isSetSuccess()) {
+          struct.success.write(oprot);
+        }
+        if (struct.isSetInvalidArgs()) {
+          struct.invalidArgs.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, turnOff_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+        java.util.BitSet incoming = iprot.readBitSet(2);
+        if (incoming.get(0)) {
+          struct.success = new Status();
+          struct.success.read(iprot);
+          struct.setSuccessIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.invalidArgs = new InvalidArguments();
+          struct.invalidArgs.read(iprot);
+          struct.setInvalidArgsIsSet(true);
+        }
+      }
+    }
+
+    private static <S extends org.apache.thrift.scheme.IScheme> S scheme(org.apache.thrift.protocol.TProtocol proto) {
+      return (org.apache.thrift.scheme.StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
+    }
+  }
+
+  public static class getEveryDevice_args implements org.apache.thrift.TBase<getEveryDevice_args, getEveryDevice_args._Fields>, java.io.Serializable, Cloneable, Comparable<getEveryDevice_args>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getEveryDevice_args");
+
+
+    private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new getEveryDevice_argsStandardSchemeFactory();
+    private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new getEveryDevice_argsTupleSchemeFactory();
+
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+;
+
+      private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
+
+      static {
+        for (_Fields field : java.util.EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      @org.apache.thrift.annotation.Nullable
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new java.lang.IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      @org.apache.thrift.annotation.Nullable
+      public static _Fields findByName(java.lang.String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final java.lang.String _fieldName;
+
+      _Fields(short thriftId, java.lang.String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public java.lang.String getFieldName() {
+        return _fieldName;
+      }
+    }
+    public static final java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getEveryDevice_args.class, metaDataMap);
+    }
+
+    public getEveryDevice_args() {
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getEveryDevice_args(getEveryDevice_args other) {
+    }
+
+    public getEveryDevice_args deepCopy() {
+      return new getEveryDevice_args(this);
+    }
+
+    @Override
+    public void clear() {
+    }
+
+    public void setFieldValue(_Fields field, @org.apache.thrift.annotation.Nullable java.lang.Object value) {
+      switch (field) {
+      }
+    }
+
+    @org.apache.thrift.annotation.Nullable
+    public java.lang.Object getFieldValue(_Fields field) {
+      switch (field) {
+      }
+      throw new java.lang.IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new java.lang.IllegalArgumentException();
+      }
+
+      switch (field) {
+      }
+      throw new java.lang.IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(java.lang.Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getEveryDevice_args)
+        return this.equals((getEveryDevice_args)that);
+      return false;
+    }
+
+    public boolean equals(getEveryDevice_args that) {
+      if (that == null)
+        return false;
+      if (this == that)
+        return true;
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      int hashCode = 1;
+
+      return hashCode;
+    }
+
+    @Override
+    public int compareTo(getEveryDevice_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+
+      return 0;
+    }
+
+    @org.apache.thrift.annotation.Nullable
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      scheme(iprot).read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      scheme(oprot).write(oprot, this);
+    }
+
+    @Override
+    public java.lang.String toString() {
+      java.lang.StringBuilder sb = new java.lang.StringBuilder("getEveryDevice_args(");
+      boolean first = true;
+
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+      // check for sub-struct validity
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, java.lang.ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class getEveryDevice_argsStandardSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
+      public getEveryDevice_argsStandardScheme getScheme() {
+        return new getEveryDevice_argsStandardScheme();
+      }
+    }
+
+    private static class getEveryDevice_argsStandardScheme extends org.apache.thrift.scheme.StandardScheme<getEveryDevice_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getEveryDevice_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getEveryDevice_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class getEveryDevice_argsTupleSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
+      public getEveryDevice_argsTupleScheme getScheme() {
+        return new getEveryDevice_argsTupleScheme();
+      }
+    }
+
+    private static class getEveryDevice_argsTupleScheme extends org.apache.thrift.scheme.TupleScheme<getEveryDevice_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, getEveryDevice_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TTupleProtocol oprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, getEveryDevice_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
+      }
+    }
+
+    private static <S extends org.apache.thrift.scheme.IScheme> S scheme(org.apache.thrift.protocol.TProtocol proto) {
+      return (org.apache.thrift.scheme.StandardScheme.class.equals(proto.getScheme()) ? STANDARD_SCHEME_FACTORY : TUPLE_SCHEME_FACTORY).getScheme();
+    }
+  }
+
+  public static class getEveryDevice_result implements org.apache.thrift.TBase<getEveryDevice_result, getEveryDevice_result._Fields>, java.io.Serializable, Cloneable, Comparable<getEveryDevice_result>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getEveryDevice_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
+
+    private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new getEveryDevice_resultStandardSchemeFactory();
+    private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new getEveryDevice_resultTupleSchemeFactory();
+
+    public @org.apache.thrift.annotation.Nullable java.util.List<java.lang.String> success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -2443,16 +3563,17 @@ public class Device {
     static {
       java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRUCT          , "Status")));
+          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+              new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
       metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(turnOff_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getEveryDevice_result.class, metaDataMap);
     }
 
-    public turnOff_result() {
+    public getEveryDevice_result() {
     }
 
-    public turnOff_result(
-      Status success)
+    public getEveryDevice_result(
+      java.util.List<java.lang.String> success)
     {
       this();
       this.success = success;
@@ -2461,14 +3582,15 @@ public class Device {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public turnOff_result(turnOff_result other) {
+    public getEveryDevice_result(getEveryDevice_result other) {
       if (other.isSetSuccess()) {
-        this.success = new Status(other.success);
+        java.util.List<java.lang.String> __this__success = new java.util.ArrayList<java.lang.String>(other.success);
+        this.success = __this__success;
       }
     }
 
-    public turnOff_result deepCopy() {
-      return new turnOff_result(this);
+    public getEveryDevice_result deepCopy() {
+      return new getEveryDevice_result(this);
     }
 
     @Override
@@ -2476,12 +3598,28 @@ public class Device {
       this.success = null;
     }
 
+    public int getSuccessSize() {
+      return (this.success == null) ? 0 : this.success.size();
+    }
+
     @org.apache.thrift.annotation.Nullable
-    public Status getSuccess() {
+    public java.util.Iterator<java.lang.String> getSuccessIterator() {
+      return (this.success == null) ? null : this.success.iterator();
+    }
+
+    public void addToSuccess(java.lang.String elem) {
+      if (this.success == null) {
+        this.success = new java.util.ArrayList<java.lang.String>();
+      }
+      this.success.add(elem);
+    }
+
+    @org.apache.thrift.annotation.Nullable
+    public java.util.List<java.lang.String> getSuccess() {
       return this.success;
     }
 
-    public turnOff_result setSuccess(@org.apache.thrift.annotation.Nullable Status success) {
+    public getEveryDevice_result setSuccess(@org.apache.thrift.annotation.Nullable java.util.List<java.lang.String> success) {
       this.success = success;
       return this;
     }
@@ -2507,7 +3645,7 @@ public class Device {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((Status)value);
+          setSuccess((java.util.List<java.lang.String>)value);
         }
         break;
 
@@ -2541,12 +3679,12 @@ public class Device {
     public boolean equals(java.lang.Object that) {
       if (that == null)
         return false;
-      if (that instanceof turnOff_result)
-        return this.equals((turnOff_result)that);
+      if (that instanceof getEveryDevice_result)
+        return this.equals((getEveryDevice_result)that);
       return false;
     }
 
-    public boolean equals(turnOff_result that) {
+    public boolean equals(getEveryDevice_result that) {
       if (that == null)
         return false;
       if (this == that)
@@ -2576,7 +3714,7 @@ public class Device {
     }
 
     @Override
-    public int compareTo(turnOff_result other) {
+    public int compareTo(getEveryDevice_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
@@ -2611,7 +3749,7 @@ public class Device {
 
     @Override
     public java.lang.String toString() {
-      java.lang.StringBuilder sb = new java.lang.StringBuilder("turnOff_result(");
+      java.lang.StringBuilder sb = new java.lang.StringBuilder("getEveryDevice_result(");
       boolean first = true;
 
       sb.append("success:");
@@ -2646,15 +3784,15 @@ public class Device {
       }
     }
 
-    private static class turnOff_resultStandardSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
-      public turnOff_resultStandardScheme getScheme() {
-        return new turnOff_resultStandardScheme();
+    private static class getEveryDevice_resultStandardSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
+      public getEveryDevice_resultStandardScheme getScheme() {
+        return new getEveryDevice_resultStandardScheme();
       }
     }
 
-    private static class turnOff_resultStandardScheme extends org.apache.thrift.scheme.StandardScheme<turnOff_result> {
+    private static class getEveryDevice_resultStandardScheme extends org.apache.thrift.scheme.StandardScheme<getEveryDevice_result> {
 
-      public void read(org.apache.thrift.protocol.TProtocol iprot, turnOff_result struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getEveryDevice_result struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TField schemeField;
         iprot.readStructBegin();
         while (true)
@@ -2665,9 +3803,18 @@ public class Device {
           }
           switch (schemeField.id) {
             case 0: // SUCCESS
-              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.success = new Status();
-                struct.success.read(iprot);
+              if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
+                {
+                  org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
+                  struct.success = new java.util.ArrayList<java.lang.String>(_list0.size);
+                  @org.apache.thrift.annotation.Nullable java.lang.String _elem1;
+                  for (int _i2 = 0; _i2 < _list0.size; ++_i2)
+                  {
+                    _elem1 = iprot.readString();
+                    struct.success.add(_elem1);
+                  }
+                  iprot.readListEnd();
+                }
                 struct.setSuccessIsSet(true);
               } else { 
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
@@ -2684,13 +3831,20 @@ public class Device {
         struct.validate();
       }
 
-      public void write(org.apache.thrift.protocol.TProtocol oprot, turnOff_result struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getEveryDevice_result struct) throws org.apache.thrift.TException {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
         if (struct.success != null) {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-          struct.success.write(oprot);
+          {
+            oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, struct.success.size()));
+            for (java.lang.String _iter3 : struct.success)
+            {
+              oprot.writeString(_iter3);
+            }
+            oprot.writeListEnd();
+          }
           oprot.writeFieldEnd();
         }
         oprot.writeFieldStop();
@@ -2699,16 +3853,16 @@ public class Device {
 
     }
 
-    private static class turnOff_resultTupleSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
-      public turnOff_resultTupleScheme getScheme() {
-        return new turnOff_resultTupleScheme();
+    private static class getEveryDevice_resultTupleSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
+      public getEveryDevice_resultTupleScheme getScheme() {
+        return new getEveryDevice_resultTupleScheme();
       }
     }
 
-    private static class turnOff_resultTupleScheme extends org.apache.thrift.scheme.TupleScheme<turnOff_result> {
+    private static class getEveryDevice_resultTupleScheme extends org.apache.thrift.scheme.TupleScheme<getEveryDevice_result> {
 
       @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, turnOff_result struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol prot, getEveryDevice_result struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TTupleProtocol oprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
         java.util.BitSet optionals = new java.util.BitSet();
         if (struct.isSetSuccess()) {
@@ -2716,17 +3870,31 @@ public class Device {
         }
         oprot.writeBitSet(optionals, 1);
         if (struct.isSetSuccess()) {
-          struct.success.write(oprot);
+          {
+            oprot.writeI32(struct.success.size());
+            for (java.lang.String _iter4 : struct.success)
+            {
+              oprot.writeString(_iter4);
+            }
+          }
         }
       }
 
       @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, turnOff_result struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol prot, getEveryDevice_result struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
         java.util.BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
-          struct.success = new Status();
-          struct.success.read(iprot);
+          {
+            org.apache.thrift.protocol.TList _list5 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+            struct.success = new java.util.ArrayList<java.lang.String>(_list5.size);
+            @org.apache.thrift.annotation.Nullable java.lang.String _elem6;
+            for (int _i7 = 0; _i7 < _list5.size; ++_i7)
+            {
+              _elem6 = iprot.readString();
+              struct.success.add(_elem6);
+            }
+          }
           struct.setSuccessIsSet(true);
         }
       }

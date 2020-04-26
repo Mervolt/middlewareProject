@@ -3,6 +3,9 @@ package com.company.server;
 import gen.rpc.thrift.*;
 import org.apache.thrift.TException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DeviceHandler implements Device.Iface {
     DeviceContainer deviceContainer;
 
@@ -77,5 +80,20 @@ public class DeviceHandler implements Device.Iface {
             throw new InvalidArguments("Turn Off ", "Device with id " + id + " does not exist");
 
         return status;
+    }
+
+    @Override
+    public List<String> getEveryDevice() throws TException {
+        List<String> everyDevice = new ArrayList<>();
+        List<FridgeObject> fridges = deviceContainer.fridges;
+        List<CameraObject> cameras = deviceContainer.cameras;
+        List<TemperatureSensorObject> sensors = deviceContainer.sensors;
+        for(FridgeObject fridge: fridges)
+            everyDevice.add(fridge.getDevice().getId());
+        for(CameraObject camera: cameras)
+            everyDevice.add(camera.getDevice().getId());
+        for(TemperatureSensorObject sensor: sensors)
+            everyDevice.add(sensor.getDevice().getId());
+        return everyDevice;
     }
 }
